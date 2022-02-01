@@ -3,7 +3,7 @@ namespace App\Models\Traits;
 
 trait Paginatable
 {
-    protected $perPageMax = 100;
+    protected $perPageMax = 100000;
 
     /**
      * Get the number of models to return per page.

@@ -28,7 +28,7 @@ class HostEditRequest extends FormRequest
         
         $rules = [
             'domain' => ['string', 'required'],
-
+            'created_at' => ['nullable', 'date'],
         ];
 
         if (!empty($hostId)) {

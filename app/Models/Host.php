@@ -11,10 +11,12 @@ class Host extends Model
 	use Paginatable;
 	
     protected $fillable = [
-        'domain'
+        'domain', 'created_at'
     ];
+    
+    protected $appends = ['docRootExists'];	
 	
-	public function configs()
+    public function configs()
     {
         return $this->hasMany(HostConfig::class);
     }
@@ -23,5 +25,24 @@ class Host extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function scopeOnlyDirectives($builder, $keys) {
+        $builder->whereIn('directive', $keys);
+    }
+
+    public function configsDirectives($keys = ['DocumentRoot'])
+    {
+        return $this->hasMany(HostConfig::class)->whereIn('directive', $keys);
+    }
     
+    public function getDocRootExistsAttribute()
+    {
+        
+        $config = $this->configs->where('directive', 'DocumentRoot')->first();
+        if (!empty($config)) {
+            $path = trim($config->value, '"');
+            return file_exists($path);
+        }
+        return false;
+    }
 }

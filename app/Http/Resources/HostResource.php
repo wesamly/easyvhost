@@ -15,13 +15,17 @@ class HostResource extends JsonResource
     public function toArray($request)
     {
         
-        return [
+        $data = [
             'id' => $this->id,
             'domain' => $this->domain,
+            'doc_root_exists' => $this->when($this->configs()->exists(), $this->docRootExists),
             'configs' => HostConfigResource::collection($this->whenLoaded('configs')),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
         ];
+        
+        return $data;
     }
 }

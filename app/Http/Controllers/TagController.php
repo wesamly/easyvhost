@@ -18,7 +18,7 @@ class TagController extends Controller
     public function index(TagListRequest $request)
     {
         
-        $records = Tag::paginate();
+        $records = Tag::get();
         
         return TagResource::collection($records);
     }

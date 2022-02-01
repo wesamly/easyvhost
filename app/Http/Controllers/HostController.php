@@ -18,9 +18,16 @@ class HostController extends Controller
      */
     public function index(HostListRequest $request)
     {
-        
-        $records = Host::paginate();
-        
+
+        $query = new Host;
+        if ($request->filled('configs')) {
+            $configs = $request->configs;
+            $query = $query->with(['configs' => function($q) use ($configs) {
+                $q->whereIn('directive', array_map('trim', explode(',', $configs)));
+            }]);
+            
+        }
+        $records = $query->latest()->paginate();
         return HostResource::collection($records);
     }
 
@@ -33,7 +40,7 @@ class HostController extends Controller
     public function store(HostEditRequest $request)
     {
         $host = Host::create($request->validated());
-
+        
         foreach ($request->config as $directive => $value) {
             $host->configs()->save(new HostConfig(['directive' => $directive, 'value' => $value]));
         }
@@ -53,8 +60,8 @@ class HostController extends Controller
      */
     public function show($id)
     {
-        $host = Host::findOrFail($id);
-        $host->load('configs');
+        $host = Host::with(['configs', 'tags'])->findOrFail($id);
+        //$host->load(['configs', 'tags']);
         return new HostResource($host);
     }
 
@@ -70,6 +77,10 @@ class HostController extends Controller
         $host = Host::findOrFail($id);
         $host->update($request->validated());
         $host->save();
+        
+        // Update Directives
+        $currentDirectives = $host->configs->pluck('directive')->toArray();
+        $requestDirectives = array_keys($request->config);
 
         foreach ($request->config as $directive => $value) {
             $config = $host->configs()->where('directive', $directive)->first();
@@ -81,8 +92,17 @@ class HostController extends Controller
             }
         }
 
+        $deletedDirectives = array_diff($currentDirectives, $requestDirectives);
+        if (!empty($deletedDirectives)) {
+            $host->configs()->whereIn('directive', $deletedDirectives)->delete();
+        }
+
+        // Update Tags
         $tagIds = $request->has('tags') ? $request->tags : [];
         $host->tags()->sync($tagIds);
+
+        $host->touch(); // Force updating updated_at
+        $host->fresh();
 
         return new HostResource($host);
     }
