@@ -8,7 +8,6 @@ VHosts manager
 composer install
 cp .env.example .env
 php artisan key:generate --ansi
-php artisan ui vue
 ```
 
 ### Database
