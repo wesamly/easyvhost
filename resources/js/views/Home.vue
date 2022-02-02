@@ -78,9 +78,10 @@
             fetchHosts() {
                 this.getHostsList().then(() => {
                     if (!this.listHeightSet) {
-                        window.setInterval(() => {
-                            let heightBeforeTable = document.querySelector('.navbar').clientHeight - document.querySelector('.table-fixed thead').clientHeight - document.querySelector('.hosts-filter').clientHeight
-                            let remainingHeight = window.innerHeight - heightBeforeTable - 50
+                        window.setTimeout(() => {
+                            
+                            let heightBeforeTable = document.querySelector('.navbar').clientHeight + document.querySelector('.table-fixed thead tr th').clientHeight + document.querySelector('.hosts-filter').clientHeight
+                            let remainingHeight = window.innerHeight - heightBeforeTable - 15
                             document.querySelector('.table-fixed tbody').style.height = remainingHeight + 'px'
                             this.listHeightSet = true
                         }, 500)
