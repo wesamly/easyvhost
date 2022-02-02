@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\HostCreated;
+use App\Events\HostDeleted;
+use App\Events\HostUpdated;
 use App\Http\Requests\HostEditRequest;
 use App\Http\Requests\HostListRequest;
 use App\Http\Resources\HostResource;
@@ -48,6 +51,8 @@ class HostController extends Controller
         $tagIds = $request->has('tags') ? $request->tags : [];
         $host->tags()->sync($tagIds);
         
+        HostCreated::dispatch($host);
+
         return new HostResource($host);
 
     }
@@ -104,6 +109,8 @@ class HostController extends Controller
         $host->touch(); // Force updating updated_at
         $host->fresh();
 
+        HostUpdated::dispatch($host);
+
         return new HostResource($host);
     }
 
@@ -117,6 +124,9 @@ class HostController extends Controller
     {
         $host = Host::findOrFail($id);
         $host->delete();
+
+        HostDeleted::dispatch($host);
+        
         return response()->noContent();
     }
 }
