@@ -5,6 +5,10 @@ namespace App\Listeners;
 use App\Events\HostCreated;
 use App\Events\HostDeleted;
 use App\Events\HostUpdated;
+use App\Models\Host;
+use App\VirtualHost\VirtualHostHook;
+use App\VirtualHost\VirtualHostModelParser;
+use App\VirtualHost\VirtualHostWriter;
 
 class VHostsUpdater
 {
@@ -16,7 +20,24 @@ class VHostsUpdater
      */
     public function updateVHosts($event)
     {
+        return true;
+        $host = $event->host;
         
+        $hosts = Host::get();
+        // Default Location
+        // TODO: use flysystem?
+        $fp = fopen('/usr/local/etc/httpd/extra/httpd-vhosts-default.conf', 'w');
+
+        foreach ($hosts as $host) {
+            // TODO: check if have custom location tag
+
+            $vhostParser = new VirtualHostModelParser($host);
+            fwrite($fp, $vhostParser->getVirtualHostBlock());
+
+        }
+
+        fclose($fp);
+
     }
 
     /**

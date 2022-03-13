@@ -28,7 +28,7 @@
                         :class="{'table-primary': currentHost.id == host.id}"
                         v-show="query === '' || host.domain.indexOf(query) > -1"
                         >
-                        <td class="col-4">{{ host.domain }}</td>
+                        <td class="col-4"><a :href="`http://${host.domain}`" target="_blank">{{ host.domain }}</a></td>
                         <td class="col-1">
                             <span v-if="host.doc_root_exists"><BootstrapIcon icon="check-circle" variant="success" /></span>
                             <span v-else><BootstrapIcon icon="exclamation-circle" variant="danger" /></span>

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>{{ config('app.name') }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,32 +23,37 @@
     </head>
     <body class="antialiased">
         <div id="app">
-            <div class="container">
-                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                    <div class="container-fluid">
-                        <router-link class="navbar-brand" :to="{name: 'home'}">Nevarro Virtual Hosts Manager</router-link>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <router-link class="navbar-brand" :to="{name: 'home'}">Nevarro Virtual Hosts Manager</router-link>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
                             <router-link class="nav-link" :to="{name: 'home'}">Hosts</router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link class="nav-link" :to="{name: 'host_edit', params: {id: '0'}}">Add Host</router-link>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                            </li>
-                        </ul>
-                        <span class="navbar-text">
-                            Navbar text with an inline element
-                        </span>
-                        </div>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{name: 'host_edit', params: {id: '0'}}">Add Host</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tags</a>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{name: 'settings'}">Settings</router-link>
+                        </li>
+                    </ul>
+                    <span class="navbar-text">
+                        Navbar text with an inline element
+                    </span>
                     </div>
-                </nav>
+                </div>
+            </nav>
+            <div class="container-fluid main mt-3">
+                
                 <router-view></router-view>
+
             </div>
         </div>
         <script src="{{ mix('/js/app.js') }}"></script>

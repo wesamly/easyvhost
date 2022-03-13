@@ -5,6 +5,7 @@ Vue.use(Router)
 
 import Home from './../views/Home.vue'
 import HostEditor from './../components/HostEditor.vue'
+import Settings from './../views/Settings.vue'
 
 // Routes
 let routes = [
@@ -22,6 +23,11 @@ let routes = [
           }
         ]
       },
+      {
+        path: '/settings',
+        name: 'settings',
+        component: Settings,
+      }
 ]
 
 //routes = routes.concat(authRoutes)
@@ -29,6 +35,8 @@ let routes = [
 let router = new Router({
   //base: process.env.BASE_URL,
   routes: routes,
+  linkActiveClass: "has-active",
+  linkExactActiveClass: "active"
 })
 
 
