@@ -43,14 +43,14 @@
                 <legend>Add Directive</legend>
                 <div class="row">
                     <div class="col-4">
-                         <input type="text" class="form-control" list="ice-cream-flavors" v-model="newConfig.directive">
-                         <datalist id="ice-cream-flavors">
-    <option value="ServerAdmin" />
-    <option value="ErrorLog" />
-    <option value="CustomLog" />
-    <option value="TransferLog" />
-    <option value="ServerAlias" />
-</datalist>
+                        <input type="text" class="form-control" list="ice-cream-flavors" v-model="newConfig.directive">
+                        <datalist id="ice-cream-flavors">
+                            <option value="ServerAdmin" />
+                            <option value="ErrorLog" />
+                            <option value="CustomLog" />
+                            <option value="TransferLog" />
+                            <option value="ServerAlias" />
+                        </datalist>
                     </div>
                     <div class="col-7"> <input type="text" class="form-control" v-model="newConfig.value" /></div>
                     <div class="col-1"><button class="btn btn-success" type="button" @click="addConfig"><BootstrapIcon icon="plus-circle-fill" /></button></div>
@@ -63,8 +63,14 @@
                 <host-tags v-model="host.tags"></host-tags>
 
             </fieldset>
+
+            <div class="alert alert-success" v-if="message != ''">{{ message }}</div>
+
             <button type="submit" class="btn btn-primary"><BootstrapIcon icon="arrow-clockwise" animation="spin" v-if="isSaving" :disabled="isSaving" /> Submit</button>
+            <button type="button" class="btn btn-danger float-end" @click="confirmDeletion"><BootstrapIcon icon="arrow-clockwise" animation="spin" v-if="isDeleting" :disabled="isDeleting" /> Delete</button>
         </form>
+
+        <confirm ref="delConfirm" @confirmed="deleteCurrentHost" :content="`This will delete ${host.domain} virtual host. Continue?`"></confirm>
     </div>
 </template>
 
@@ -72,11 +78,13 @@
     import { mapState, mapActions } from 'vuex'
     
     import HostTags from './HostTags.vue'
+    import Confirm from './Confirm.vue'
 
     export default {
         name: "HostEditor",
         components: {
-            'host-tags': HostTags
+            'host-tags': HostTags,
+            'confirm': Confirm,
         },
         props: ['id'],
         data() {
@@ -89,7 +97,8 @@
                     directive: '',
                     value: ''
                 },
-                tags: []
+                tags: [],
+                message: '',
             }
         },
         computed: {
@@ -97,6 +106,7 @@
                 host: state => state.currentHost,
                 isLoading: state => state.isLoading,
                 isSaving: state => state.isSaving,
+                isDeleting: state => state.isDeleting,
             }),
             otherConfigs() {
                 let mainKeys = ['_addr_port', 'ServerName', 'DocumentRoot']
@@ -125,7 +135,7 @@
             this.loadCurrentHost()
         },
         methods: {
-            ...mapActions('hosts', ['setCurrentHost', 'updateHost', 'resetCurrentHost', 'addHost', 'getHostsList']),
+            ...mapActions('hosts', ['setCurrentHost', 'updateHost', 'resetCurrentHost', 'addHost', 'getHostsList', 'deleteHost']),
             loadCurrentHost() {
                 if (this.id > 0) {
                     this.setCurrentHost(this.id).then(() => {
@@ -189,6 +199,25 @@
                         })
                 }
                 
+            },
+
+            confirmDeletion() {
+                this.$refs.delConfirm.show()
+            },
+
+            deleteCurrentHost() {
+                console.log('deleting')
+                
+                this.deleteHost(this.id)
+                    .then(resp => {
+                        this.message = 'Virtual Host deleted. reloading...'
+                        window.setTimeout(() => {
+                            this.message = ''
+                            this.getHostsList()
+                            this.$router.push({name: 'home'})
+                        }, 1000)
+                        
+                    })
             }
             
 

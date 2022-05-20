@@ -6,6 +6,7 @@ const state = {
     currentHost: {id: '', domain: ''},
     isLoading: false,
     isSaving: false,
+    isDeleting: false,
     isSuccess: false,
 }
 
@@ -18,15 +19,15 @@ const mutations = {
         state.currentHost = data.data
     },
     setLoading (state, isLoading) {
-        // mutate state
         state.isLoading = isLoading
     },
     setSaving (state, isSaving) {
-        // mutate state
         state.isSaving = isSaving
     },
+    setDeleting (state, isDeleting) {
+        state.isDeleting = isDeleting
+    },
     setSuccess (state, isSuccess) {
-        // mutate state
         state.isSuccess = isSuccess
     },
     
@@ -59,7 +60,6 @@ const actions = {
             
             HostsApi.createHost(host)
                 .then(resp => {
-                    //commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'next'},{ root: true })
                     resolve(resp)
                 })
                 .catch(err => {
@@ -98,7 +98,6 @@ const actions = {
             HostsApi.updateHost(payload.id, payload.host)
                 .then(resp => {
                     commit('setSuccess', true)
-                    //commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'now'},{ root: true })
                     resolve(resp)
                 })
                 .catch(err => {
@@ -114,18 +113,17 @@ const actions = {
     },
     deleteHost({ commit }, id) {
         return new Promise((resolve, reject) => {
-            commit('setSaving', true)
+            commit('setDeleting', true)
             
             HostsApi.deleteHost(id)
                 .then(resp => {
-                    commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'now'},{ root: true })
                     resolve(resp)
                 })
                 .catch(err => {
                     reject(err)
                 })
                 .finally(() => {
-                    commit('setSaving', false)
+                    commit('setDeleting', false)
                 })
         })
     },
