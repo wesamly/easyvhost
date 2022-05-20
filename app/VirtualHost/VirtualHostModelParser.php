@@ -41,7 +41,7 @@ class VirtualHostModelParser
             $text .= "\t {$entry}" . PHP_EOL;
         }
 
-        $text .= "</VirtualHost>";
+        $text .= "</VirtualHost>" . PHP_EOL;
 
         return $text;
     }

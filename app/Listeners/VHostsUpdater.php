@@ -20,7 +20,7 @@ class VHostsUpdater
      */
     public function updateVHosts($event)
     {
-        return true;
+        
         $host = $event->host;
         
         $hosts = Host::get();
