@@ -6,6 +6,7 @@ const state = {
     currentTag: {},
     isLoading: false,
     isSaving: false,
+    isDeleting: false,
     isSuccess: false,
 }
 
@@ -18,15 +19,15 @@ const mutations = {
         state.currentTag = data.data
     },
     setLoading (state, isLoading) {
-        // mutate state
         state.isLoading = isLoading
     },
     setSaving (state, isSaving) {
-        // mutate state
         state.isSaving = isSaving
     },
+    setDeleting (state, isDeleting) {
+        state.isDeleting = isDeleting
+    },
     setSuccess (state, isSuccess) {
-        // mutate state
         state.isSuccess = isSuccess
     },
     
@@ -95,7 +96,7 @@ const actions = {
             TagsApi.updateTag(payload.id, payload.tag)
                 .then(resp => {
                     commit('setSuccess', true)
-                    commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'now'},{ root: true })
+                    //commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'now'},{ root: true })
                     resolve(resp)
                 })
                 .catch(err => {
@@ -111,18 +112,18 @@ const actions = {
     },
     deleteTag({ commit }, id) {
         return new Promise((resolve, reject) => {
-            commit('setSaving', true)
+            commit('setDeleting', true)
             
             TagsApi.deleteTag(id)
                 .then(resp => {
-                    commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'now'},{ root: true })
+                    //commit('flash/addMessage', {type: 'success', text: resp.data.meta.message, when: 'now'},{ root: true })
                     resolve(resp)
                 })
                 .catch(err => {
                     reject(err)
                 })
                 .finally(() => {
-                    commit('setSaving', false)
+                    commit('setDeleting', false)
                 })
         })
     }

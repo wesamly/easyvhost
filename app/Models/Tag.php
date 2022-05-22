@@ -16,6 +16,14 @@ class Tag extends Model
 	
 	public $timestamps = false;
 
-	
+    /**
+     * Get Tag Hosts
+     *
+     * @return object[]
+     */
+	public function hosts()
+    {
+        return $this->belongsToMany(Host::class);
+    }
     
 }

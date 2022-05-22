@@ -38,7 +38,7 @@
                             <router-link class="nav-link" :to="{name: 'host_edit', params: {id: '0'}}">Add Host</router-link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Tags</a>
+                            <router-link class="nav-link" :to="{name: 'tags'}">Tags</router-link>
                         </li>
                         <li class="nav-item">
                             <router-link class="nav-link" :to="{name: 'settings'}">Settings</router-link>

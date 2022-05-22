@@ -24,8 +24,7 @@ class TagListRequest extends FormRequest
     public function rules()
     {
         return [
-            
-            
+            'include' => 'sometimes|in:hosts_count'
         ];
     }
 }

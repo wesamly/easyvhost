@@ -17,8 +17,11 @@ class TagController extends Controller
      */
     public function index(TagListRequest $request)
     {
-        
-        $records = Tag::get();
+        $query = new Tag;
+        if ($request->has('include') && $request->include == 'hosts_count') {
+            $query = $query->withCount('hosts');
+        }
+        $records = $query->orderBy('name')->get();
         
         return TagResource::collection($records);
     }

@@ -5,6 +5,7 @@ Vue.use(Router)
 
 import Home from './../views/Home.vue'
 import HostEditor from './../components/HostEditor.vue'
+import Tags from './../views/Tags.vue'
 import Settings from './../views/Settings.vue'
 
 // Routes
@@ -22,6 +23,11 @@ let routes = [
             props: true,
           }
         ]
+      },
+      {
+        path: '/tags',
+        name: 'tags',
+        component: Tags,
       },
       {
         path: '/settings',
