@@ -18,7 +18,7 @@
             <div class="row mb-3">
                 <label for="ServerName" class="col-sm-2 col-form-label">ServerName</label>
                 <div class="col-sm-10">
-                <input type="text" class="form-control" id="ServerName" v-model="configs.ServerName" placeholder="example.com" :readonly="id > 0">
+                <input type="text" class="form-control" id="ServerName" v-model="configs.ServerName" placeholder="example.com">
                 </div>
             </div>
             <div class="row mb-3">
