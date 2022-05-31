@@ -20,3 +20,7 @@ php artisan key:generate --ansi
 npm install && npm run dev
 npm run dev #again
 ```
+
+## Virtual Host Modifiers
+
+Check [documentation](modifiers/README.md).

@@ -1,10 +1,19 @@
 <template>
   <div class="row">
-    <div class="col">
+    <div class="col-12 col-md-6">
       <h4><BootstrapIcon icon="bookmarks-fill" variant="secondary" /> Tags</h4>
       <div class="form-group">
         <button class="btn btn-success btn-sm" @click="showTagEditor({id: 0, name: ''})">Add</button>
       </div>
+      <form class="row">
+        <div class="col-2">
+          <input type="text" readonly class="form-control-plaintext" value="Filter:" />
+        </div>
+        <div class="col-10">
+          <input type="text" class="form-control" id="tag">
+        </div>
+        
+      </form>
       <table class="table table-hover table-fixed">
         <thead>
           <tr>
@@ -39,7 +48,7 @@
       <tag-editor ref="tagEditor" @tag-updated="editTag"></tag-editor>
       <confirm ref="delConfirm" @confirmed="removeTag" :content="`This will delete ${delTag.name} tag. Continue?`"></confirm>
     </div>
-    <div class="col">&nbsp;</div>
+    <div class="col-12 col-md-6">&nbsp;</div>
   </div>
 </template>
 <script>

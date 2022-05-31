@@ -71,7 +71,7 @@ class VirtualHostModelParser
                 return $a["p"] - $b["p"];
             });
             foreach (self::$modifiers as $modifier) {
-                $entries = call_user_func($modifier['c'], $this->host, $entries); // $callback();
+                $entries = call_user_func($modifier['c'], $this->host, $entries);
             }
         }
 

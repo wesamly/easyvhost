@@ -1,7 +1,7 @@
 <template>
     
     <div class="row">
-        <div class="col">
+        <div class="col-12 col-md-6">
             <div class="hosts-filter">
                 <div class="input-group">
                     <select class="form-select">
@@ -42,7 +42,7 @@
             </table>
             </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-md-6">
             <router-view></router-view>
         </div>
     </div>
