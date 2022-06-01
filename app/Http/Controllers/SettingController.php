@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SettingsUpdated;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -57,6 +58,8 @@ class SettingController extends Controller
 
         setting()->save();
 
+        SettingsUpdated::dispatch();
+        
         return response()->noContent();
 
     }
