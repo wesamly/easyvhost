@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import HostsModule from './hosts'
 import TagsModule from './tags'
+import SettingsModule from './settings'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     state: state,
     modules: {
         hosts: HostsModule,
-        tags: TagsModule
+        tags: TagsModule,
+        settings: SettingsModule,
     }
 })

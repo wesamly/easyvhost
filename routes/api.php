@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HostController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('hosts', HostController::class);
 Route::apiResource('tags', TagController::class);
+
+Route::get('settings', [SettingController::class, 'index']);
+Route::post('settings', [SettingController::class, 'save']);

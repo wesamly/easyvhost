@@ -34,9 +34,7 @@ export default {
     },
   },
   data() {
-    return {
-      myTags: [],
-    };
+    return {};
   },
 
   computed: {
@@ -44,10 +42,13 @@ export default {
       tags: (state) => state.tags,
       isLoading: (state) => state.isLoading,
     }),
-  },
-  watch: {
-    value(newValue) {
-      this.myTags = newValue;
+    myTags: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
     },
   },
   mounted() {
