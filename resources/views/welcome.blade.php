@@ -25,7 +25,7 @@
         <div id="app">
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div class="container-fluid">
-                    <router-link class="navbar-brand" :to="{name: 'home'}">Nevarro Virtual Hosts Manager</router-link>
+                    <router-link class="navbar-brand" :to="{name: 'home'}">EasyVHost Virtual Hosts Manager</router-link>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                     </button>

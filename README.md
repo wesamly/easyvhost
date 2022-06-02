@@ -1,6 +1,6 @@
-# Nevarro
+# EasyVHost
 
-VHosts manager
+Apache Virtual Hosts manager
 
 ## Installation
 
