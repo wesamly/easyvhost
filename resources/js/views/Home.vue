@@ -67,14 +67,14 @@
                 isLoading: state => state.isLoading
             }),
             pageIndex() {
-                return 0;//(this.pagination.current_page - 1) * this.pagination.per_page
+                return 0;
             }
         },
         mounted() {
             this.fetchHosts()
         },
         methods: {
-            ...mapActions('hosts', ['getHostsList', 'deleteHost']),
+            ...mapActions('hosts', ['getHostsList']),
             fetchHosts() {
                 this.getHostsList().then(() => {
                     if (!this.listHeightSet) {
@@ -92,7 +92,7 @@
             getHostConfig(configs, key) {
                 for (let i in configs) {
                     let entry = configs[i]
-                    if (entry.directive == 'DocumentRoot') {
+                    if (entry.directive == key) {
                         return entry.value
                     }
                 }
@@ -101,11 +101,6 @@
         }
     }
 </script>
-
-<style scoped>
-
-
-</style>
 
 <style lang="scss" scoped>
 .table-fixed tbody {
@@ -134,6 +129,10 @@
         clear: both;
         display: block;
     }
+}
+.table-fixed tbody tr td:nth-child(1) {
+    overflow: hidden; 
+    white-space: nowrap;
 }
 .table-fixed tbody tr td:nth-child(3) {
     text-overflow: ellipsis;

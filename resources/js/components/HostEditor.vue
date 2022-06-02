@@ -2,7 +2,7 @@
     <div class="">
         <h5>{{ editorTitle }}</h5>
 
-        <form action="" method="post" @submit.prevent="saveHost">
+        <form action="" method="post" @submit.prevent="saveHost" id="hostForm">
             <div class="row mb-3">
                 <label for="domain" class="col-sm-2 col-form-label">Domain</label>
                 <div class="col-sm-10">
@@ -145,11 +145,13 @@
                             let entry = this.host.configs[i]
                             this.configs[entry.directive] = entry.value
                         }
+                        this.ensureFormVisible()
                     })
                 } else {
                     this.configs = {}
                     this.tags = {}
                     this.resetCurrentHost()
+                    this.ensureFormVisible()
                 }
                 
             },
@@ -186,7 +188,7 @@
 
                 if (this.id > 0) {
                     this.updateHost({id: this.id, host: data})
-                        .then(resp => {
+                        .then(() => {
                             //TODO: message
                         })
                 } else {
@@ -209,7 +211,7 @@
                 console.log('deleting')
                 
                 this.deleteHost(this.id)
-                    .then(resp => {
+                    .then(() => {
                         this.message = 'Virtual Host deleted. reloading...'
                         window.setTimeout(() => {
                             this.message = ''
@@ -218,8 +220,18 @@
                         }, 1000)
                         
                     })
+            },
+
+            ensureFormVisible() {
+                const rect = document.getElementById('domain').getBoundingClientRect()
+                let isInViewport = rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                if (!isInViewport) {
+                    document.getElementById('hostForm').scrollIntoView()
+                }
             }
-            
 
         }
     }
