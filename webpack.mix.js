@@ -14,4 +14,10 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
+    .options({
+        processCssUrls: false
+    })
     .version();
+
+// Bootstrap Icons
+mix.copy('node_modules/bootstrap-icons/font/fonts', 'public/fonts');

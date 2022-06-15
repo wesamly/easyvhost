@@ -19,7 +19,7 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
-         <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
+         <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}" />
     </head>
     <body class="antialiased">
         <div id="app">
@@ -56,6 +56,11 @@
 
             </div>
         </div>
-        <script src="{{ mix('/js/app.js') }}"></script>
+        <script>
+            let AppVars = {
+                url: '{{ url('/') }}',
+            }
+        </script>
+        <script src="{{ asset(mix('/js/app.js')) }}"></script>
     </body>
 </html>

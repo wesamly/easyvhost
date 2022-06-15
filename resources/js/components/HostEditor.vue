@@ -33,7 +33,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" :id="directive" v-model="configs[directive]">
                         <button class="btn btn-danger" type="button" @click="removeConfig(directive)">
-                            <BootstrapIcon icon="dash-circle-fill" />
+                            <i class="bi bi-dash-circle-fill"></i>
                         </button>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         </datalist>
                     </div>
                     <div class="col-7"> <input type="text" class="form-control" v-model="newConfig.value" /></div>
-                    <div class="col-1"><button class="btn btn-success" type="button" @click="addConfig"><BootstrapIcon icon="plus-circle-fill" /></button></div>
+                    <div class="col-1"><button class="btn btn-success" type="button" @click="addConfig"><i class="bi bi-plus-circle-fill"></i></button></div>
                 </div>
             </fieldset>
 
@@ -66,8 +66,8 @@
 
             <div class="alert alert-success" v-if="message != ''">{{ message }}</div>
 
-            <button type="submit" class="btn btn-primary"><BootstrapIcon icon="arrow-clockwise" animation="spin" v-if="isSaving" :disabled="isSaving" /> Submit</button>
-            <button type="button" class="btn btn-danger float-end" @click="confirmDeletion"><BootstrapIcon icon="arrow-clockwise" animation="spin" v-if="isDeleting" :disabled="isDeleting" /> Delete</button>
+            <button type="submit" class="btn btn-primary" :disabled="isSaving"><i class="bi bi-arrow-clockwise" animation="spin" v-if="isSaving"></i> Submit</button>
+            <button type="button" class="btn btn-danger float-end" @click="confirmDeletion" :disabled="isDeleting"><i class="bi bi-arrow-clockwise" animation="spin" v-if="isDeleting"></i> Delete</button>
         </form>
 
         <confirm ref="delConfirm" @confirmed="deleteCurrentHost" :content="`This will delete ${host.domain} virtual host. Continue?`"></confirm>

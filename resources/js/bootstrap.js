@@ -14,6 +14,10 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.baseURL = AppVars.url;
+
+// Bootstrap Icons icon font
+require('bootstrap-icons/font/bootstrap-icons.scss');
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -9,7 +9,7 @@
                     </select>
                     <input type="text" class="form-control" v-model="query" />
                     <button class="btn btn-secondary" type="button" @click="query = ''" v-if="query != ''">
-                            <BootstrapIcon icon="x" />
+                            <i class="bi bi-x"></i>
                         </button>
                 </div>
             </div>
@@ -30,11 +30,11 @@
                         >
                         <td class="col-4"><a :href="`http://${host.domain}`" target="_blank">{{ host.domain }}</a></td>
                         <td class="col-1">
-                            <span v-if="host.doc_root_exists"><BootstrapIcon icon="check-circle" variant="success" /></span>
-                            <span v-else><BootstrapIcon icon="exclamation-circle" variant="danger" /></span>
+                            <span v-if="host.doc_root_exists"><i class="bi bi-check-circle text-success"></i></span>
+                            <span v-else><i class="bi bi-exclamation-circle text-danger"></i></span>
                         </td>
                         <td class="col-6"><span>{{ getHostConfig(host.configs, 'DocumentRoot') }}</span></td>
-                        <td class="col-1"><router-link :to="{name: 'host_edit', params: {id: host.id}}" class="btn2 btn-outline-secondary2 btn-sm2"><BootstrapIcon icon="arrow-right" /></router-link></td>
+                        <td class="col-1"><router-link :to="{name: 'host_edit', params: {id: host.id}}" class="btn2 btn-outline-secondary2 btn-sm2"><i class="bi bi-arrow-right"></i></router-link></td>
                     </tr>
                     <tr><td class="col-12" colspan="4" v-if="isLoading">Loading...</td></tr>
                     <tr><td class="col-12" colspan="4" v-if="!isLoading && hosts.length == 0">No Records</td></tr>

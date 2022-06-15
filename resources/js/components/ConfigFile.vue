@@ -8,7 +8,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" v-model="value.file" :placeholder="inputPlaceHolder">
                 <button class="btn btn-danger" v-if="!isDefault" @click="deleteFile" type="button">
-                    <BootstrapIcon icon="dash-circle-fill" />
+                    <i class="bi bi-dash-circle-fill"></i>
                 </button>
             </div>
         </div>

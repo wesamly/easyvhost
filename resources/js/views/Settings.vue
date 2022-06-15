@@ -2,7 +2,7 @@
   <div class="row">
       <div class="col">
             <h4> 
-                <BootstrapIcon icon="gear-fill" variant="secondary" /> Settings 
+                <i class="bi bi-gear-fill text-secondary"></i> Settings 
                 <span class="badge bg-info text-dark" v-if="isLoading">Loading...</span>
             </h4>
             <div class="row">
@@ -14,7 +14,16 @@
             <form action="" method="post" @submit.prevent="saveSettings">
                 <fieldset>
                     <legend>VirtualHosts Config Files</legend>
-
+                    
+                    <div class="row ">
+                        <div class="col col-md-7">
+                            <div class="alert alert-info">
+                                <strong><i class="bi bi-info-circle"></i> Note</strong>
+                                Files must be existent and writable.
+                            </div>
+                        </div>
+                    </div>
+                    
                     <config-file class="mb-3" :is-default="true" :key="'_default'" v-model="settings.configs.default"></config-file>
                     <config-file class="mb-3" v-for="(entry, index) in settings.configs.files" :key="index"
                                 v-model="settings.configs.files[index]"
@@ -22,7 +31,7 @@
                                 ></config-file>
                     <div class="row ">
                         <div class="col col-md-7 text-end">
-                            <button class="btn btn-primary" type="button" @click="addFile"><BootstrapIcon icon="plus-circle-fill" /> Add File for Tag</button>
+                            <button class="btn btn-primary" type="button" @click="addFile"><i class="bi bi-plus-circle-fill"></i> Add File for Tag</button>
                         </div>
                     </div>            
                 </fieldset>

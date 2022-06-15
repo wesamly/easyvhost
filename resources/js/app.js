@@ -8,12 +8,9 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
-import BootstrapIcon from '@dvuckovic/vue-bootstrap-icons';
-
 import store from './store'
 import router from './routes'
 
-Vue.component('BootstrapIcon', BootstrapIcon);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

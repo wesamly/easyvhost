@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 col-md-6">
-      <h4><BootstrapIcon icon="bookmarks-fill" variant="secondary" /> Tags</h4>
+      <h4><i class="bi bi-bookmarks-fill text-secondary"></i> Tags</h4>
       <div class="form-group">
         <button class="btn btn-success btn-sm" @click="showTagEditor({id: 0, name: ''})">Add</button>
       </div>
