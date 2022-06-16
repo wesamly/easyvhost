@@ -38,6 +38,8 @@ php artisan key:generate --ansi
 
 ### Database
 
+#### MySQL
+
 Create a database using your database manager, e.g. phpMyAdmin.
 
 In `.env` fill database variables:
@@ -46,6 +48,16 @@ In `.env` fill database variables:
 DB_DATABASE=evhost_db
 DB_USERNAME=root
 DB_PASSWORD=
+```
+#### SQLite
+
+Create fill `database.sqlite` under */database*
+
+In `.env` fill database variables:
+
+```.env
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/easyvhost/database/database.sqlite
 ```
 
 Run the following command to create database tables:
