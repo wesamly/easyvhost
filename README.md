@@ -24,7 +24,7 @@ Beta
 
 - PHP >= 7.4
 - Apache Web Server (for local development)
-- MySQL 5.7
+- MySQL 5.7 or SQLite
 
 ## Installation
 
@@ -42,7 +42,7 @@ php artisan key:generate --ansi
 
 Create a database using your database manager, e.g. phpMyAdmin.
 
-In `.env` fill database variables:
+In `.env` file update database variables:
 
 ```.env
 DB_DATABASE=evhost_db
@@ -51,9 +51,9 @@ DB_PASSWORD=
 ```
 #### SQLite
 
-Create fill `database.sqlite` under */database*
+Create file `database.sqlite` under */database*
 
-In `.env` fill database variables:
+In `.env` file update database variables:
 
 ```.env
 DB_CONNECTION=sqlite
