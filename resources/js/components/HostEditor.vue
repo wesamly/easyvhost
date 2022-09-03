@@ -4,7 +4,7 @@
 
         <form action="" method="post" @submit.prevent="saveHost" id="hostForm">
             <div class="row mb-3">
-                <label for="domain" class="col-sm-2 col-form-label">Domain</label>
+                <label for="domain" class="col-sm-2 col-form-label">Domain (Title)</label>
                 <div class="col-sm-10">
                 <input type="text" class="form-control" id="domain" v-model="host.domain" placeholder="example.com">
                 </div>

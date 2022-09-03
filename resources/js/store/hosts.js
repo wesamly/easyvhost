@@ -52,7 +52,7 @@ const actions = {
         })
     },
     getHostsList({ dispatch }, payload) {
-        return dispatch('getHosts', {configs: 'DocumentRoot, _ip_port', per_page: 99999})
+        return dispatch('getHosts', {configs: 'ServerName, DocumentRoot, _ip_port', per_page: 99999})
     },
     addHost({ commit }, host) {
         return new Promise((resolve, reject) => {

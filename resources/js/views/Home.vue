@@ -5,7 +5,7 @@
             <div class="hosts-filter">
                 <div class="input-group">
                     <select class="form-select">
-                        <option value="host">Filter by Host</option>
+                        <option value="host">Filter by Domain / ServerName</option>
                     </select>
                     <input type="text" class="form-control" v-model="query" />
                     <button class="btn btn-secondary" type="button" @click="query = ''" v-if="query != ''">
@@ -17,7 +17,7 @@
             <table class="table table-hover table-fixed">
                 <thead>
                     <tr>
-                        <th class="col-4">Server Name</th>
+                        <th class="col-4">Domain (Title)</th>
                         <th class="col-1">&nbsp;</th>
                         <th class="col-6">Document Root</th>
                         <th class="col-1">&nbsp;</th>
@@ -26,9 +26,9 @@
                 <tbody>
                     <tr v-for="host in hosts" :key="host.id" 
                         :class="{'table-primary': currentHost.id == host.id}"
-                        v-show="query === '' || host.domain.indexOf(query) > -1"
+                        v-show="query === '' || host.domain.indexOf(query) > -1 || getHostConfig(host.configs, 'ServerName').indexOf(query) > -1"
                         >
-                        <td class="col-4"><a :href="`http://${host.domain}`" target="_blank">{{ host.domain }}</a></td>
+                        <td class="col-4"><a :href="getHostUrl(host)" target="_blank">{{ host.domain }}</a></td>
                         <td class="col-1">
                             <span v-if="host.doc_root_exists"><i class="bi bi-check-circle text-success"></i></span>
                             <span v-else><i class="bi bi-exclamation-circle text-danger"></i></span>
@@ -97,6 +97,19 @@
                     }
                 }
                 return ''
+            },
+            getHostUrl(host) {console.log(host.configs)
+                let serverName = this.getHostConfig(host.configs, 'ServerName')
+                if (serverName.indexOf('://') > -1) {
+                    return serverName
+                }
+                let addrPort = this.getHostConfig(host.configs, '_addr_port')
+                let scheme = 'http://'
+                if (addrPort.indexOf(':443') > -1) {
+                    scheme = 'https://'
+                }
+                
+                return `${scheme}${serverName}`
             }
         }
     }
