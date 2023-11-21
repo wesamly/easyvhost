@@ -50,7 +50,8 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex'
+    import { mapState, mapActions } from 'pinia'
+    import { useHostsStore } from '@/stores/HostsStore'
 
     export default {
         name: 'Home',
@@ -61,10 +62,10 @@
             }
         },
         computed: {
-            ...mapState('hosts', {
-                hosts: state => state.hosts,
-                currentHost: state => state.currentHost,
-                isLoading: state => state.isLoading
+            ...mapState(useHostsStore, {
+                hosts: 'hosts',
+                currentHost: 'currentHost',
+                isLoading: 'isLoading'
             }),
             pageIndex() {
                 return 0;
@@ -74,7 +75,7 @@
             this.fetchHosts()
         },
         methods: {
-            ...mapActions('hosts', ['getHostsList']),
+            ...mapActions(useHostsStore, ['getHostsList']),
             fetchHosts() {
                 this.getHostsList().then(() => {
                     if (!this.listHeightSet) {
@@ -98,7 +99,7 @@
                 }
                 return ''
             },
-            getHostUrl(host) {console.log(host.configs)
+            getHostUrl(host) {
                 let serverName = this.getHostConfig(host.configs, 'ServerName')
                 if (serverName.indexOf('://') > -1) {
                     return serverName

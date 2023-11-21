@@ -52,9 +52,10 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import TagEditor from "../components/TagEditor"
-import Confirm from "../components/Confirm.vue"
+import { mapState, mapActions } from "pinia"
+import { useTagsStore } from "@/stores/TagsStore"
+import TagEditor from "@/components/TagEditor.vue"
+import Confirm from "@/components/Confirm.vue"
 
 export default {
   name: "Tags",
@@ -67,16 +68,16 @@ export default {
     };
   },
   computed: {
-    ...mapState("tags", {
-      tags: (state) => state.tags,
-      isLoading: (state) => state.isLoading,
+    ...mapState(useTagsStore, {
+      tags: 'tags',
+      isLoading: 'isLoading',
     })
   },
   mounted() {
     this.fetchTags()
   },
   methods: {
-    ...mapActions("tags", ["getTags", "addTag", "updateTag", "deleteTag"]),
+    ...mapActions(useTagsStore, ["getTags", "addTag", "updateTag", "deleteTag"]),
     
     fetchTags() {
       this.getTags({ include: "hosts_count" }).then(() => {});

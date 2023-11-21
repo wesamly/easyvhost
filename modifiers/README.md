@@ -8,7 +8,7 @@ Modifiers can be utilized to apply custom logic to VirtualHost entry like adding
 
 - Copy/Paste the following code and update it to match your requirement:
 
-```
+```php
 <?php
 
 return [

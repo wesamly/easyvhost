@@ -60,8 +60,7 @@
             <fieldset>
                 <legend>Tags</legend>
                 
-                <host-tags v-model="host.tags"></host-tags>
-
+                <tags-input v-model="host.tags" class="mb-3"></tags-input>
             </fieldset>
 
             <div class="alert alert-success" v-if="message != ''">{{ message }}</div>
@@ -75,16 +74,17 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex'
+    import { mapState, mapActions } from 'pinia'
+    import { useHostsStore } from '@/stores/HostsStore'
     
-    import HostTags from './HostTags.vue'
+    import HostTagsInput from './HostTagsInput.vue'
     import Confirm from './Confirm.vue'
 
     export default {
         name: "HostEditor",
         components: {
-            'host-tags': HostTags,
             'confirm': Confirm,
+            'tags-input': HostTagsInput
         },
         props: ['id'],
         data() {
@@ -102,11 +102,11 @@
             }
         },
         computed: {
-            ...mapState('hosts', {
-                host: state => state.currentHost,
-                isLoading: state => state.isLoading,
-                isSaving: state => state.isSaving,
-                isDeleting: state => state.isDeleting,
+            ...mapState(useHostsStore, {
+                host: 'currentHost',
+                isLoading: 'isLoading',
+                isSaving: 'isSaving',
+                isDeleting: 'isDeleting',
             }),
             otherConfigs() {
                 let mainKeys = ['_addr_port', 'ServerName', 'DocumentRoot']
@@ -135,7 +135,7 @@
             this.loadCurrentHost()
         },
         methods: {
-            ...mapActions('hosts', ['setCurrentHost', 'updateHost', 'resetCurrentHost', 'addHost', 'getHostsList', 'deleteHost']),
+            ...mapActions(useHostsStore, ['setCurrentHost', 'updateHost', 'resetCurrentHost', 'addHost', 'getHostsList', 'deleteHost']),
             loadCurrentHost() {
                 if (this.id > 0) {
                     this.setCurrentHost(this.id).then(() => {

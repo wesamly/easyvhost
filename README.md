@@ -22,9 +22,9 @@ Beta
 
 ## Dependencies
 
-- PHP >= 7.4
+- PHP >= 8.1 (For detailed extensions check [Laravel 10 Deployment](https://laravel.com/docs/10.x/deployment#server-requirements))
 - Apache Web Server (for local development)
-- MySQL 5.7 or SQLite
+- MySQL 5.7+, MariaDB 10.10+, or SQLite 3.8.8+
 
 ## Installation
 
@@ -69,8 +69,8 @@ Run the following command to create database tables:
 Run the following commands:
 
 ```bash
-npm install && npm run dev
-npm run dev #again
+npm install
+npm run dev
 ```
 
 ## Virtual Host Modifiers

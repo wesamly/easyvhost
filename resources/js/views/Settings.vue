@@ -63,7 +63,8 @@
 </template>
 <script>
 
-    import { mapState, mapActions } from 'vuex'
+    import { mapState, mapActions } from 'pinia'
+    import { useSettingsStore } from '@/stores/SettingsStore'
     import ConfigFile from './../components/ConfigFile.vue'
 
     export default {
@@ -77,17 +78,17 @@
             }
         },
         computed: {
-            ...mapState('settings', {
-                settings: state => state.settings,
-                isLoading: state => state.isLoading,
-                isSaving: state => state.isSaving
+            ...mapState(useSettingsStore, {
+                settings: 'settings',
+                isLoading: 'isLoading',
+                isSaving: 'isSaving'
             }),
         },
         mounted() {
             this.getSettings()
         },
         methods: {
-            ...mapActions('settings', ['getSettings', 'updateSettings']),
+            ...mapActions(useSettingsStore, ['getSettings', 'updateSettings']),
             addFile() {
                 this.settings.configs.files.push({tags: [], file: ''})
             },
