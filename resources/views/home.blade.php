@@ -19,7 +19,7 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/js/app.js'])
     </head>
     <body class="antialiased">
         <div id="app">
@@ -30,6 +30,6 @@
                 url: '{{ url('/') }}',
             }
         </script>
-        <script src="{{ asset(mix('/js/app.js')) }}"></script>
+        
     </body>
 </html>

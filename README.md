@@ -11,7 +11,7 @@ Apache Virtual Hosts manager with the following features:
 
 **Technology**
 
-Laravel PHP Framework, with Vuejs for frontend, and MySQL Database.
+Laravel PHP Framework, with Vue 3 for frontend, and MySQL Database.
 
 **Status**
 
@@ -25,6 +25,7 @@ Beta
 - PHP >= 8.1 (For detailed extensions check [Laravel 10 Deployment](https://laravel.com/docs/10.x/deployment#server-requirements))
 - Apache Web Server (for local development)
 - MySQL 5.7+, MariaDB 10.10+, or SQLite 3.8.8+
+- Node.js (16+)
 
 ## Installation
 
