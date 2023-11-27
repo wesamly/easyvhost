@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Traits\Paginatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 class Host extends Model
@@ -18,20 +20,16 @@ class Host extends Model
 
     /**
      * Get Host Configs
-     *
-     * @return object[]
      */
-    public function configs()
+    public function configs(): HasMany
     {
         return $this->hasMany(HostConfig::class);
     }
 
     /**
      * Get Host Tags
-     *
-     * @return object[]
      */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }

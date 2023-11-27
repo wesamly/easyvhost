@@ -9,8 +9,6 @@ class SettingController extends Controller
 {
     /**
      * Return Settings.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -18,7 +16,7 @@ class SettingController extends Controller
 
         $files = [];
         if (isset($rawSettings['files']) && ! empty($rawSettings['files'])) {
-            $files = json_decode($rawSettings['files'], 1);
+            $files = json_decode($rawSettings['files'], true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $files = [];
             }
@@ -40,8 +38,6 @@ class SettingController extends Controller
 
     /**
      * Save Settings.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function save(Request $request)
     {
