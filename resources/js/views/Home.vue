@@ -2,17 +2,7 @@
     
     <div class="row">
         <div class="col-12 col-md-6">
-            <div class="hosts-filter">
-                <div class="input-group">
-                    <select class="form-select">
-                        <option value="host">Filter by Domain / ServerName</option>
-                    </select>
-                    <input type="text" class="form-control" v-model="query" />
-                    <button class="btn btn-secondary" type="button" @click="query = ''" v-if="query != ''">
-                            <i class="bi bi-x"></i>
-                        </button>
-                </div>
-            </div>
+            <hosts-filter v-model="filter" :pre-tag-id="tagId"></hosts-filter>
             <div class="table-responsive">
             <table class="table table-hover table-fixed">
                 <thead>
@@ -24,17 +14,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="host in hosts" :key="host.id" 
-                        :class="{'table-primary': currentHost.id == host.id}"
-                        v-show="query === '' || host.domain.indexOf(query) > -1 || getHostConfig(host.configs, 'ServerName').indexOf(query) > -1"
-                        >
+                    <tr v-for="host in hostsList" :key="host.id"  :class="{'table-primary': currentHost.id == host.id}">
                         <td class="col-4"><a :href="getHostUrl(host)" target="_blank">{{ host.domain }}</a></td>
                         <td class="col-1">
                             <span v-if="host.doc_root_exists"><i class="bi bi-check-circle text-success"></i></span>
                             <span v-else><i class="bi bi-exclamation-circle text-danger"></i></span>
                         </td>
                         <td class="col-6"><span>{{ getHostConfig(host.configs, 'DocumentRoot') }}</span></td>
-                        <td class="col-1"><router-link :to="{name: 'host_edit', params: {id: host.id}}" class="btn2 btn-outline-secondary2 btn-sm2"><i class="bi bi-arrow-right"></i></router-link></td>
+                        <td class="col-1">
+                            <router-link :to="{name: 'host_edit', params: {id: host.id}}">
+                                <i class="bi bi-file-text" v-if="currentHost.id != host.id"></i>
+                                <i class="bi bi-file-text-fill" v-else></i>
+                            </router-link>
+                        </td>
                     </tr>
                     <tr><td class="col-12" colspan="4" v-if="isLoading">Loading...</td></tr>
                     <tr><td class="col-12" colspan="4" v-if="!isLoading && hosts.length == 0">No Records</td></tr>
@@ -52,13 +44,18 @@
 <script>
     import { mapState, mapActions } from 'pinia'
     import { useHostsStore } from '@/stores/HostsStore'
+    import HostsFilter from '@/components/HostsFilter.vue'
 
     export default {
         name: 'Home',
+        components: {
+            'hosts-filter': HostsFilter
+        },
         data() {
             return {
                 listHeightSet: false,
-                query: ''
+                filter: {type: 'host', value: ''},
+                tagId: null
             }
         },
         computed: {
@@ -69,9 +66,33 @@
             }),
             pageIndex() {
                 return 0;
+            },
+            hostsList() {
+                let list = [];
+                for (let i in this.hosts) {
+                    let host = this.hosts[i];
+                    if (!this.isFiltered(host)) {
+                        continue;
+                    }
+                    list.push(host);
+                }
+                return list;
+            },
+            filterTagIds() {
+                let ids = []
+                if (this.filter.type == 'tags') {
+                    for (let i in this.filter.value) {
+                        ids.push(this.filter.value[i].id)
+                    }
+                }
+                return ids
             }
         },
         mounted() {
+            let tagId = this.$route.query.tag_id
+            if (tagId) {
+                this.tagId = Number(tagId)
+            }
             this.fetchHosts()
         },
         methods: {
@@ -111,6 +132,32 @@
                 }
                 
                 return `${scheme}${serverName}`
+            },
+            isFiltered(host) {
+                if (this.filter.type == 'host' && this.filter.value != '') {
+                    return host.domain.indexOf(this.filter.value) > -1
+                }
+                if (this.filter.type == 'document' && this.filter.value != '') {
+                    return this.getHostConfig(host.configs, 'DocumentRoot').indexOf(this.filter.value) > -1
+                }
+                if (this.filter.type == 'document_exist' && this.filter.value != '') {
+                    let exists = this.filter.value == 'yes'
+                    return host.doc_root_exists == exists
+                }
+                if (this.filter.type == 'tags' && this.filterTagIds.length > 0) {
+                    return this.matchingTagFilter(host)
+                }
+                return true
+            },
+            matchingTagFilter(host) {
+                for (let j in this.filterTagIds) {
+                    for (let k in host.tag_ids) {
+                        if (parseInt(host.tag_ids[k]) == parseInt(this.filterTagIds[j])) {
+                            return true
+                        }
+                    }
+                }
+                return false
             }
         }
     }

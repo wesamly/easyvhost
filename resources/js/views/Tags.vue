@@ -26,11 +26,14 @@
           <tr v-for="tag in tags" :key="tag.id">
             <td>{{ tag.name }}</td>
             <td>
-              <a href="#" v-if="tag.hosts_count > 0">{{ tag.hosts_count }}</a>
+              <router-link :to="{name: 'home', query: {tag_id: tag.id}}" v-if="tag.hosts_count > 0" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-code"></i> {{ tag.hosts_count }}
+              </router-link>
+              
               <span v-if="tag.hosts_count == 0">{{ tag.hosts_count }}</span>
             </td>
             <td class="text-end">
-              <button class="btn btn-primary btn-sm" @click="showTagEditor(tag)">Edit</button>
+              <button class="btn btn-primary btn-sm mx-1" @click="showTagEditor(tag)">Edit</button>
               <button class="btn btn-danger btn-sm" @click="confirmDeletion(tag)">Delete</button>
             </td>
           </tr>

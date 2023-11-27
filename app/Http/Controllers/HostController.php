@@ -7,6 +7,7 @@ use App\Events\HostDeleted;
 use App\Events\HostUpdated;
 use App\Http\Requests\HostEditRequest;
 use App\Http\Requests\HostListRequest;
+use App\Http\Resources\HostDetailsResource;
 use App\Http\Resources\HostResource;
 use App\Models\Host;
 use App\Models\HostConfig;
@@ -30,7 +31,12 @@ class HostController extends Controller
             }]);
             
         }
+        if ($request->filled('tags')) {
+            $query = $query->with(['tags']);
+        }
+
         $records = $query->latest()->paginate();
+        
         return HostResource::collection($records);
     }
 
@@ -53,7 +59,7 @@ class HostController extends Controller
         
         HostCreated::dispatch($host);
 
-        return new HostResource($host);
+        return new HostDetailsResource($host);
 
     }
 
@@ -66,8 +72,7 @@ class HostController extends Controller
     public function show($id)
     {
         $host = Host::with(['configs', 'tags'])->findOrFail($id);
-        //$host->load(['configs', 'tags']);
-        return new HostResource($host);
+        return new HostDetailsResource($host);
     }
 
     /**
@@ -111,7 +116,7 @@ class HostController extends Controller
 
         HostUpdated::dispatch($host);
 
-        return new HostResource($host);
+        return new HostDetailsResource($host);
     }
 
     /**

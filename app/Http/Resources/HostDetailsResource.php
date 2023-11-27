@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HostResource extends JsonResource
+class HostDetailsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +20,7 @@ class HostResource extends JsonResource
             'domain' => $this->domain,
             'doc_root_exists' => $this->when($this->configs()->exists(), $this->docRootExists),
             'configs' => HostConfigResource::collection($this->whenLoaded('configs')),
-            'tag_ids' => $this->tags->pluck('id'),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
