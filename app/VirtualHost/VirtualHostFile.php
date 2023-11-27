@@ -7,17 +7,19 @@ use Illuminate\Support\Facades\Storage;
 class VirtualHostFile
 {
     private $file;
+
     private $disk;
+
     private $fileExists = false;
 
     /**
      * VirtualHostFile constructor.
      *
-     * @param string $file Path to file
+     * @param  string  $file Path to file
      */
     public function __construct($file)
     {
-        
+
         $this->file = $file;
         // TODO: add support for FTP/SFTP using Laravel Storage
         $disk = Storage::build([
@@ -37,7 +39,7 @@ class VirtualHostFile
     /**
      * Write content to file
      *
-     * @param string $content
+     * @param  string  $content
      * @return void
      */
     public function write($content)
@@ -46,5 +48,4 @@ class VirtualHostFile
             $this->disk->append($this->file, $content);
         }
     }
-
 }

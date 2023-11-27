@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-     /**
+    /**
      * Return Settings.
      *
      * @return \Illuminate\Http\Response
@@ -15,9 +15,9 @@ class SettingController extends Controller
     public function index()
     {
         $rawSettings = setting()->all();
-        
+
         $files = [];
-        if (isset($rawSettings['files']) && !empty($rawSettings['files'])) {
+        if (isset($rawSettings['files']) && ! empty($rawSettings['files'])) {
             $files = json_decode($rawSettings['files'], 1);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $files = [];
@@ -28,9 +28,9 @@ class SettingController extends Controller
             'configs' => [
                 'default' => [
                     'file' => $rawSettings['default_file'] ?? '',
-                    'tags' => []
+                    'tags' => [],
                 ],
-                'files' => $files
+                'files' => $files,
             ],
 
         ];
@@ -41,7 +41,6 @@ class SettingController extends Controller
     /**
      * Save Settings.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function save(Request $request)
@@ -59,10 +58,8 @@ class SettingController extends Controller
         setting()->save();
 
         SettingsUpdated::dispatch();
-        
+
         return response()->noContent();
 
     }
-
-    
 }

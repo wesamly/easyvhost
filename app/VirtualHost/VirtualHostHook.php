@@ -1,5 +1,7 @@
 <?php
+
 // https://pineco.de/wordpress-like-hooks-and-filters-in-laravel/
+
 namespace App\VirtualHost;
 
 class VirtualHostHook
@@ -24,8 +26,6 @@ class VirtualHostHook
     /**
      * Dynamically call methods.
      *
-     * @param  string  $method
-     * @param  array  $arguments
      * @return mixed
      */
     public function __call(string $method, array $arguments)
@@ -37,9 +37,6 @@ class VirtualHostHook
      * Register a new hook callback.
      *
      * @param  string|array  $hook
-     * @param  callable  $callback
-     * @param  int  $priority
-     * @return void
      */
     public static function register($hook, callable $callback, int $priority = 10): void
     {
@@ -50,7 +47,6 @@ class VirtualHostHook
     /**
      * Apply the callbacks on the given hook and value.
      *
-     * @param  string  $hook
      * @param  array  $arguments
      * @return mixed
      */
@@ -59,7 +55,7 @@ class VirtualHostHook
         self::initItems();
 
         return self::$items->filter(function ($filter) use ($hook) {
-            return !!array_filter((array) $filter['hook'], function ($item) use ($hook) {
+            return (bool) array_filter((array) $filter['hook'], function ($item) use ($hook) {
                 return Str::is($item, $hook);
             });
         })->sortBy('priority')->reduce(function ($value, $filter) use ($arguments) {

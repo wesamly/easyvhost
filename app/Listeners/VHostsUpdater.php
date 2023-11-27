@@ -15,12 +15,12 @@ class VHostsUpdater
     /**
      * Update VirtualHost config files
      *
-     * @param object $event
+     * @param  object  $event
      * @return void
      */
     public function updateVHosts($event)
     {
-        
+
         $hosts = Host::get();
 
         $tagFiles = $this->getConfigFiles();
@@ -49,7 +49,7 @@ class VHostsUpdater
                             $vhFile->write($vhostParser->getVirtualHostBlock());
                         }
                     }
-                }   
+                }
             }
         }
     }
@@ -83,7 +83,6 @@ class VHostsUpdater
             $configFiles = [];
         }
 
-        
         $tagFiles = [];
         foreach ($configFiles as $entry) {
             if (empty($entry['file'])) {
@@ -91,8 +90,10 @@ class VHostsUpdater
             }
             if (isset($entry['tags']) && is_array($entry['tags'])) {
 
-                $tagFiles[] = new class($entry) {
+                $tagFiles[] = new class($entry)
+                {
                     public $file;
+
                     public $tags;
 
                     public function __construct($entry)
@@ -110,7 +111,6 @@ class VHostsUpdater
                     {
                         return array_column($this->tags, 'id');
                     }
-                
                 };
 
             }
@@ -122,7 +122,7 @@ class VHostsUpdater
     /**
      * Get Unique Tags Ids
      *
-     * @param array $tagFiles
+     * @param  array  $tagFiles
      * @return array
      */
     private function getUniqueTagsIds($tagFiles)
@@ -131,6 +131,7 @@ class VHostsUpdater
         foreach ($tagFiles as $tagFile) {
             $ids = array_merge($ids, $tagFile->getTagsIds());
         }
+
         return array_unique($ids);
     }
 }

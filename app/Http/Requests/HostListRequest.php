@@ -24,8 +24,7 @@ class HostListRequest extends FormRequest
     public function rules()
     {
         return [
-            
-            
+
         ];
     }
 }

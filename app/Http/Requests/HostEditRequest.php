@@ -25,13 +25,13 @@ class HostEditRequest extends FormRequest
     public function rules()
     {
         $hostId = $this->route('host');
-        
+
         $rules = [
             'domain' => ['string', 'required'],
             'created_at' => ['nullable', 'date'],
         ];
 
-        if (!empty($hostId)) {
+        if (! empty($hostId)) {
             $rules[] = Rule::unique('hosts', 'domain')->ignore($hostId);
         } else {
             $rules[] = Rule::unique('hosts', 'domain');

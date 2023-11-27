@@ -6,11 +6,10 @@ use App\Http\Requests\TagEditRequest;
 use App\Http\Requests\TagListRequest;
 use App\Http\Resources\TagResource;
 use App\Models\Tag;
-use Illuminate\Http\Response;
 
 class TagController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -22,7 +21,7 @@ class TagController extends Controller
             $query = $query->withCount('hosts');
         }
         $records = $query->orderBy('name')->get();
-        
+
         return TagResource::collection($records);
     }
 
@@ -35,6 +34,7 @@ class TagController extends Controller
     public function store(TagEditRequest $request)
     {
         $tag = Tag::create($request->validated());
+
         return new TagResource($tag);
 
     }
@@ -48,6 +48,7 @@ class TagController extends Controller
     public function show($id)
     {
         $tag = Tag::findOrFail($id);
+
         return new TagResource($tag);
     }
 
@@ -63,6 +64,7 @@ class TagController extends Controller
         $tag = Tag::findOrFail($id);
         $tag->update($request->validated());
         $tag->save();
+
         return new TagResource($tag);
     }
 
@@ -76,6 +78,7 @@ class TagController extends Controller
     {
         $tag = Tag::findOrFail($id);
         $tag->delete();
+
         return response()->noContent();
     }
 }

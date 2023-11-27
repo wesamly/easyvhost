@@ -41,7 +41,7 @@ class RewriteVhosts extends Command
     {
         $host = Host::first();
         HostUpdated::dispatch($host);
-        
+
         return 0;
     }
 }

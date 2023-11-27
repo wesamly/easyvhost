@@ -11,11 +11,10 @@ use App\Http\Resources\HostDetailsResource;
 use App\Http\Resources\HostResource;
 use App\Models\Host;
 use App\Models\HostConfig;
-use Illuminate\Http\Response;
 
 class HostController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -26,17 +25,17 @@ class HostController extends Controller
         $query = new Host;
         if ($request->filled('configs')) {
             $configs = $request->configs;
-            $query = $query->with(['configs' => function($q) use ($configs) {
+            $query = $query->with(['configs' => function ($q) use ($configs) {
                 $q->whereIn('directive', array_map('trim', explode(',', $configs)));
             }]);
-            
+
         }
         if ($request->filled('tags')) {
             $query = $query->with(['tags']);
         }
 
         $records = $query->latest()->paginate();
-        
+
         return HostResource::collection($records);
     }
 
@@ -49,14 +48,14 @@ class HostController extends Controller
     public function store(HostEditRequest $request)
     {
         $host = Host::create($request->validated());
-        
+
         foreach ($request->config as $directive => $value) {
             $host->configs()->save(new HostConfig(['directive' => $directive, 'value' => $value]));
         }
 
         $tagIds = $request->has('tags') ? $request->tags : [];
         $host->tags()->sync($tagIds);
-        
+
         HostCreated::dispatch($host);
 
         return new HostDetailsResource($host);
@@ -72,6 +71,7 @@ class HostController extends Controller
     public function show($id)
     {
         $host = Host::with(['configs', 'tags'])->findOrFail($id);
+
         return new HostDetailsResource($host);
     }
 
@@ -87,14 +87,14 @@ class HostController extends Controller
         $host = Host::findOrFail($id);
         $host->update($request->validated());
         $host->save();
-        
+
         // Update Directives
         $currentDirectives = $host->configs->pluck('directive')->toArray();
         $requestDirectives = array_keys($request->config);
 
         foreach ($request->config as $directive => $value) {
             $config = $host->configs()->where('directive', $directive)->first();
-            if (!is_null($config)) {
+            if (! is_null($config)) {
                 $config->value = $value;
                 $config->save();
             } else {
@@ -103,7 +103,7 @@ class HostController extends Controller
         }
 
         $deletedDirectives = array_diff($currentDirectives, $requestDirectives);
-        if (!empty($deletedDirectives)) {
+        if (! empty($deletedDirectives)) {
             $host->configs()->whereIn('directive', $deletedDirectives)->delete();
         }
 
@@ -131,7 +131,7 @@ class HostController extends Controller
         $host->delete();
 
         HostDeleted::dispatch($host);
-        
+
         return response()->noContent();
     }
 }

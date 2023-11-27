@@ -8,14 +8,14 @@ use Illuminate\Support\Collection;
 
 class Host extends Model
 {
-	use Paginatable;
-	
+    use Paginatable;
+
     protected $fillable = [
-        'domain', 'created_at'
+        'domain', 'created_at',
     ];
-    
-    protected $appends = ['docRootExists'];	
-	
+
+    protected $appends = ['docRootExists'];
+
     /**
      * Get Host Configs
      *
@@ -31,59 +31,55 @@ class Host extends Model
      *
      * @return object[]
      */
-	public function tags()
+    public function tags()
     {
         return $this->belongsToMany(Tag::class);
     }
-    
+
     /**
      * Check DocumentRoot path exists
-     *
-     * @return boolean
      */
-    public function getDocRootExistsAttribute() : bool
+    public function getDocRootExistsAttribute(): bool
     {
-        
+
         $config = $this->configs->where('directive', 'DocumentRoot')->first();
-        if (!empty($config)) {
+        if (! empty($config)) {
             $path = trim($config->value, '"');
+
             return file_exists($path);
         }
+
         return false;
     }
 
     /**
      * Host Directives
-     *
-     * @return Collection
      */
-    public function getDirectivesAttribute() : Collection
+    public function getDirectivesAttribute(): Collection
     {
         return $this->configs->pluck('value', 'directive');
     }
 
     /**
      * Get the VirtualHost Block
-     *
-     * @return string
      */
-    public function virtualHostBlock() : string
+    public function virtualHostBlock(): string
     {
         $directives = $this->directives;
 
         if ($directives->isEmpty()) {
-            return  '';
+            return '';
         }
 
-        $text = '<VirtualHost ' . $directives->get('_addr_port') . '>' . PHP_EOL;
+        $text = '<VirtualHost '.$directives->get('_addr_port').'>'.PHP_EOL;
         $directives->forget('_addr_port');
 
         foreach ($directives as $directive => $value) {
-            $text .= "\t {$directive} {$value}" . PHP_EOL;
+            $text .= "\t {$directive} {$value}".PHP_EOL;
         }
 
-        $text .= "</VirtualHost>";
+        $text .= '</VirtualHost>';
 
         return $text;
-    }    
+    }
 }
