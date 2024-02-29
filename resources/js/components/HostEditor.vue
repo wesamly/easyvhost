@@ -162,8 +162,9 @@
                         return false
                     }  
                 }
-                Vue.set(this.configs, this.newConfig.directive, this.newConfig.value)
-
+                
+                this.configs[this.newConfig.directive] = this.newConfig.value
+                
                 this.newConfig.directive = ''
                 this.newConfig.value = ''
             },

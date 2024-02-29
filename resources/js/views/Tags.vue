@@ -98,7 +98,8 @@ export default {
           if (this.tags[i].id == tag.id) {
             let tempTag = this.tags[i]
             tempTag.name = tag.name
-            Vue.set(this.tags, i, tempTag)
+            this.tags[i] = tempTag
+            
             break
           }
         }
