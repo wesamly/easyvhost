@@ -2,15 +2,8 @@ import axios from 'axios'
 
 export default {
     getTags (payload) {
-        // if (payload.per_page == -1) {
-        //     delete payload.per_page
-        // }
-        
         return axios.get('/api/tags', {
             params: payload,
-            // paramsSerializer: function (params) {
-            //     return Qs.stringify(params, {arrayFormat: 'brackets'})
-            // },
         })
     },
     getTag (id) {

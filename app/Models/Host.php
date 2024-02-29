@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Paginatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Support\Collection;
 
 class Host extends Model
 {
-    use Paginatable;
+    use HasFactory, Paginatable;
 
     protected $fillable = [
         'domain', 'created_at',
@@ -56,28 +57,5 @@ class Host extends Model
     public function getDirectivesAttribute(): Collection
     {
         return $this->configs->pluck('value', 'directive');
-    }
-
-    /**
-     * Get the VirtualHost Block
-     */
-    public function virtualHostBlock(): string
-    {
-        $directives = $this->directives;
-
-        if ($directives->isEmpty()) {
-            return '';
-        }
-
-        $text = '<VirtualHost '.$directives->get('_addr_port').'>'.PHP_EOL;
-        $directives->forget('_addr_port');
-
-        foreach ($directives as $directive => $value) {
-            $text .= "\t {$directive} {$value}".PHP_EOL;
-        }
-
-        $text .= '</VirtualHost>';
-
-        return $text;
     }
 }
