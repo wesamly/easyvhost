@@ -10,6 +10,7 @@ export const useHostsStore = defineStore('hosts', {
         isSaving: false,
         isDeleting: false,
         isSuccess: false,
+        errors: {}
     }),
     actions: {
         setHostsData (data) {
@@ -30,6 +31,9 @@ export const useHostsStore = defineStore('hosts', {
         },
         setSuccess (isSuccess) {
             this.isSuccess = isSuccess
+        },
+        setErrors (errors) {
+            this.errors = errors
         },
         getHosts(payload) {
             return new Promise((resolve, reject) => {
@@ -61,7 +65,11 @@ export const useHostsStore = defineStore('hosts', {
                     })
                     .catch(err => {
                         
-                        if (Object.prototype.hasOwnProperty.call(err, 'response') && Object.prototype.hasOwnProperty.call(err.response, 'status') && err.response.status == 422) {
+                        if (
+                            Object.hasOwn(err, 'response')
+                            && Object.hasOwn(err.response, 'status')
+                            && err.response.status == 422
+                        ) {
                             // TODO: commit('form/setInputErrors', err.response.data.errors, { root: true })
                         }
                         reject(err)
@@ -98,8 +106,12 @@ export const useHostsStore = defineStore('hosts', {
                         resolve(resp)
                     })
                     .catch(err => {
-                        if (Object.prototype.hasOwnProperty.call(err, 'response') && Object.prototype.hasOwnProperty.call(err.response, 'status') && err.response.status == 422) {
-                            // TODO: commit('form/setInputErrors', err.response.data.errors, { root: true })
+                        if (
+                            Object.hasOwn(err, 'response')
+                            && Object.hasOwn(err.response, 'status')
+                            && err.response.status == 422
+                        ) {
+                            this.setErrors(err.response.data.errors)
                         }
                         reject(err)
                     })

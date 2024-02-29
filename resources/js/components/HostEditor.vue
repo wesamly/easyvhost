@@ -6,13 +6,15 @@
             <div class="row mb-3">
                 <label for="domain" class="col-sm-2 col-form-label">Domain (Title)</label>
                 <div class="col-sm-10">
-                <input type="text" class="form-control" id="domain" v-model="host.domain" placeholder="example.com">
+                <input type="text" :class="['form-control', {'is-invalid': fieldHasError('domain')}]" id="domain" v-model="host.domain" placeholder="example.com">
+                <div class="invalid-feedback" v-if="fieldHasError('domain')">{{ getFieldError('domain') }}</div>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="_addr_port" class="col-sm-2 col-form-label">addr[:port]</label>
                 <div class="col-sm-10">
-                <input type="text" class="form-control" id="_addr_port" v-model="configs._addr_port" placeholder="*:80">
+                <input type="text" :class="['form-control', {'is-invalid': fieldHasError('config._addr_port')}]" id="_addr_port" v-model="configs._addr_port" placeholder="*:80">
+                <div class="invalid-feedback" v-if="fieldHasError('config._addr_port')">{{ getFieldError('config._addr_port') }}</div>
                 </div>
             </div>
             <div class="row mb-3">
@@ -63,7 +65,10 @@
                 <tags-input v-model="host.tags" class="mb-3"></tags-input>
             </fieldset>
 
-            <div class="alert alert-success" v-if="message != ''">{{ message }}</div>
+            <div class="alert alert-success" v-if="message != ''">
+                <i class="bi bi-check-circle-fill"></i>
+                {{ message }}
+            </div>
 
             <button type="submit" class="btn btn-primary" :disabled="isSaving"><i class="bi bi-arrow-clockwise" animation="spin" v-if="isSaving"></i> Submit</button>
             <button type="button" class="btn btn-danger float-end" @click="confirmDeletion" :disabled="isDeleting"><i class="bi bi-arrow-clockwise" animation="spin" v-if="isDeleting"></i> Delete</button>
@@ -76,6 +81,7 @@
 <script>
     import { mapState, mapActions } from 'pinia'
     import { useHostsStore } from '@/stores/HostsStore'
+    import { useErrorStore } from '@/stores/ErrorStore'
     
     import HostTagsInput from './HostTagsInput.vue'
     import Confirm from './Confirm.vue'
@@ -107,6 +113,10 @@
                 isLoading: 'isLoading',
                 isSaving: 'isSaving',
                 isDeleting: 'isDeleting',
+                fieldErrors: 'errors',
+            }),
+            ...mapState(useErrorStore, {
+                errors: 'errors',
             }),
             otherConfigs() {
                 let mainKeys = ['_addr_port', 'ServerName', 'DocumentRoot']
@@ -136,6 +146,7 @@
         },
         methods: {
             ...mapActions(useHostsStore, ['setCurrentHost', 'updateHost', 'resetCurrentHost', 'addHost', 'getHostsList', 'deleteHost']),
+            ...mapActions(useErrorStore, ['addErrors', 'fieldHasError', 'getFieldError', 'clearErrors']),
             loadCurrentHost() {
                 if (this.id > 0) {
                     this.setCurrentHost(this.id).then(() => {
@@ -180,6 +191,8 @@
             },
 
             saveHost() {
+                this.clearErrors()
+
                 let data = {
                     domain: this.host.domain,
                     config: this.configs,
@@ -190,14 +203,25 @@
                 if (this.id > 0) {
                     this.updateHost({id: this.id, host: data})
                         .then(() => {
-                            //TODO: message
+                            this.message = 'Virtual Host updated.'
+                            window.setTimeout(() => {
+                                this.message = ''
+                            }, 3000)
+                        })
+                        .catch(err => {
+                            this.addErrors(this.fieldErrors)
                         })
                 } else {
                     this.addHost(data)
                         .then(resp => {
                             let id = resp.data.data.id
-                            this.getHostsList()
-                            this.$router.push({name: 'host_edit', params: {id: id}})
+                            this.message = 'Virtual Host created.'
+                            window.setTimeout(() => {
+                                this.message = ''
+                                this.getHostsList()
+                                this.$router.push({name: 'host_edit', params: {id: id}})
+                            }, 1000)
+                            
 
                         })
                 }
@@ -209,7 +233,6 @@
             },
 
             deleteCurrentHost() {
-                console.log('deleting')
                 
                 this.deleteHost(this.id)
                     .then(() => {

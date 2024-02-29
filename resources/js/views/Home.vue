@@ -122,7 +122,7 @@
             },
             getHostUrl(host) {
                 let serverName = this.getHostConfig(host.configs, 'ServerName')
-                if (serverName.indexOf('://') > -1) {
+                if (String(serverName).indexOf('://') > -1) {
                     return serverName
                 }
                 let addrPort = this.getHostConfig(host.configs, '_addr_port')

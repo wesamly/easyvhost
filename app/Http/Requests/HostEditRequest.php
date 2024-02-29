@@ -27,8 +27,10 @@ class HostEditRequest extends FormRequest
         $hostId = $this->route('host');
 
         $rules = [
-            'domain' => ['string', 'required'],
+            'domain' => ['required', 'string'],
             'created_at' => ['nullable', 'date'],
+
+            'config._addr_port' => ['required', 'string'],
         ];
 
         if (! empty($hostId)) {

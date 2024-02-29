@@ -59,6 +59,9 @@ class VirtualHostModelParser
         $directives->forget('_addr_port');
 
         foreach ($directives as $directive => $value) {
+            if (empty($value)) {
+                continue;
+            }
             $entries[] = "{$directive} {$value}";
         }
 
