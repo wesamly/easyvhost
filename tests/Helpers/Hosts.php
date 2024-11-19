@@ -12,7 +12,7 @@ function generateHostBasicDirectives(string $domain, array $extraConfigs = []): 
     $list = [
         'ServerName' => $domain,
         'DocumentRoot' => '"/var/www/html/'.$faker->randomNumber().'"',
-        '_addr_post' => '*.80',
+        '_addr_port' => '*.80',
     ];
 
     $list = array_merge($list, $extraConfigs);
