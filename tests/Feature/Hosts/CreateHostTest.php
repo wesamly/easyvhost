@@ -10,10 +10,12 @@ uses(RefreshDatabase::class, WithFaker::class);
 
 it('can create a new host', function () {
     $domain = $this->faker->domainName();
-    $configFile = '/httpd-conf-dir/httpd-vhosts.conf';
 
-    Storage::fake('local');
-    Storage::fake('local')->put($configFile, '');
+    Storage::fake('vhosts_dir');
+    $disk = Storage::disk('vhosts_dir');
+    $configFile = $disk->path('/httpd-vhosts-create.conf');
+    // File must exist
+    $disk->put($configFile, '<VirtualHost *.80></VirtualHost>');
 
     setting()->forgetAll();
     setting(['default_file' => $configFile])->save();
@@ -47,6 +49,12 @@ it('can create a new host', function () {
     // Assert tags assigned
     $host = Host::where('domain', $domain)->first();
     expect($host->tags->pluck('id')->toArray())->toEqual($tags->pluck('id')->toArray());
-    // TODO: assert file content match the added virtual host
-    Storage::disk('local')->assertExists($configFile);
+
+    // Assert file content match the added virtual host
+    $content = $disk->get($configFile);
+
+    unset($data['config']['_addr_port']);
+    foreach ($data['config'] as $directive => $value) {
+        expect($content)->toContain($directive.' '.$value);
+    }
 });

@@ -15,6 +15,27 @@
                 <fieldset>
                     <legend>VirtualHosts Config Files</legend>
                     
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label for="domain" class="col-form-label">Virtual Hosts Configs Directory</label>
+                        </div>
+                        <div class="col-12 col-sm-8 col-md-5" v-if="!settings.vhosts_path">
+                            <div class="alert alert-warning">
+                                Virtual Hosts Configs Directory is required. Set value in the project .env as following:
+                                <code>APACHE_VHOST_CONFIG_DIR="/path/here"</code><br>
+                                Paths may be but are not limited to (check your OS/Apache docs): 
+                                    <ul>
+                                        <li><code>/etc/httpd/conf.d</code></li>
+                                        <li><code>/etc/apache2/sites-available</code></li>
+                                        <li><code>/etc/apache2/sites-enabled</code></li>
+                                    </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-8 col-md-5" v-if="settings.vhosts_path">
+                            <input type="text" class="form-control" v-model="settings.vhosts_path" disabled>
+                        </div>
+                    </div>
                     <div class="row ">
                         <div class="col col-md-7">
                             <div class="alert alert-info">

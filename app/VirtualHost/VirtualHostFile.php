@@ -2,34 +2,26 @@
 
 namespace App\VirtualHost;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 
 class VirtualHostFile
 {
-    private $file;
+    private Filesystem $disk;
 
-    private $disk;
+    private bool $fileExists = false;
 
-    private $fileExists = false;
-
-    /**
-     * VirtualHostFile constructor.
-     *
-     * @param  string  $file Path to file
-     */
-    public function __construct($file)
+    public function __construct(private string $filePath)
     {
 
-        $this->file = $file;
         // TODO: add support for FTP/SFTP using Laravel Storage
-        $disk = Storage::build([
-            'driver' => 'local',
-            'root' => '/',
-        ]);
-        $fileExists = $disk->exists($file);
+        $disk = Storage::disk('vhosts_dir');
+
+        $fileExists = ! empty($this->filePath) && $disk->exists($this->filePath);
+
         if ($fileExists) {
             // Reset Content
-            $disk->put($file, '');
+            $disk->put($this->filePath, '');
         }
 
         $this->disk = $disk;
@@ -38,14 +30,11 @@ class VirtualHostFile
 
     /**
      * Write content to file
-     *
-     * @param  string  $content
-     * @return void
      */
-    public function write($content)
+    public function write(string $content)
     {
         if ($this->fileExists) {
-            $this->disk->append($this->file, $content);
+            $this->disk->append($this->filePath, $content);
         }
     }
 }

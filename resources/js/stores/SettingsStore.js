@@ -4,6 +4,7 @@ import SettingsApi from '@/api/Settings'
 export const useSettingsStore = defineStore('settings', {
     state: () => ({
         settings: {
+            vhosts_path: null,
             configs: {
                 default: {
                     tags: [],

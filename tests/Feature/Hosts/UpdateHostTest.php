@@ -13,10 +13,11 @@ it('can update host', function () {
     $host = createSampleHost(['ErrorLog' => '"/path/to/error.log"']);
 
     $domain = $host->domain;
-    $configFile = '/httpd-conf-dir/httpd-vhosts.conf';
+    $configFile = 'httpd-vhosts.conf';
 
-    Storage::fake('local');
-    Storage::fake('local')->put($configFile, '');
+    Storage::fake('vhosts_dir');
+    $disk = Storage::disk('vhosts_dir');
+    $disk->put($configFile, '');
 
     setting()->forgetAll();
     setting(['default_file' => $configFile])->save();
@@ -59,6 +60,7 @@ it('can update host', function () {
     // Assert DocumentRoot directive updated
     expect($host->configs()->where('directive', 'DocumentRoot')->first()->value)->toEqual($newDocRoot);
 
-    // TODO: Assert file content match the added virtual host
-    Storage::disk('local')->assertExists($configFile);
+    $content = Storage::disk('vhosts_dir')->get($configFile);
+
+    expect($content)->toContain($newDocRoot);
 });

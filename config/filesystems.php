@@ -56,6 +56,12 @@ return [
             'throw' => false,
         ],
 
+        'vhosts_dir' => [
+            'driver' => 'local',
+            'root' => env('APACHE_VHOST_CONFIG_DIR', null),
+            'throw' => false,
+        ],
+
     ],
 
     /*

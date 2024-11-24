@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         inputPlaceHolder() {
-            return this.isDefault ? 'E.g. /usr/local/etc/httpd/extra/httpd-vhosts-default.conf' : 'E.g. /usr/local/etc/httpd/extra/httpd-vhosts-example-tag.conf'
+            return this.isDefault ? 'E.g. httpd-vhosts-default.conf' : 'E.g. httpd-vhosts-example-tag.conf'
         },
         value: {
             get() {

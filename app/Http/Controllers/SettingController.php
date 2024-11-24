@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\SettingsUpdated;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateSettingsRequest;
 
 class SettingController extends Controller
 {
@@ -23,6 +23,7 @@ class SettingController extends Controller
         }
 
         $settings = [
+            'vhosts_path' => config(('filesystems.disks.vhosts_dir.root')),
             'configs' => [
                 'default' => [
                     'file' => $rawSettings['default_file'] ?? '',
@@ -39,7 +40,7 @@ class SettingController extends Controller
     /**
      * Save Settings.
      */
-    public function save(Request $request)
+    public function save(UpdateSettingsRequest $request)
     {
 
         // Default config file

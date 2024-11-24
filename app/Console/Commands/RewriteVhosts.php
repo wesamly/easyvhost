@@ -20,7 +20,7 @@ class RewriteVhosts extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Triggers virtual hosts rewrite';
 
     /**
      * Create a new command instance.
