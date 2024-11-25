@@ -81,6 +81,7 @@ class HostController extends Controller
         $requestDirectives = array_keys($request->config);
 
         foreach ($request->config as $directive => $value) {
+            /** @var ?HostConfig $config */
             $config = $host->configs()->where('directive', $directive)->first();
             if (! is_null($config)) {
                 $config->value = $value;

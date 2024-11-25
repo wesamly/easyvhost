@@ -40,7 +40,7 @@ class Host extends Model
      */
     public function getDocRootExistsAttribute(): bool
     {
-
+        /** @var ?HostConfig $config */
         $config = $this->configs->where('directive', 'DocumentRoot')->first();
         if (! empty($config)) {
             $path = trim($config->value, '"');
