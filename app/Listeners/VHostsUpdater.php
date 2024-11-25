@@ -9,6 +9,7 @@ use App\Events\SettingsUpdated;
 use App\Models\Host;
 use App\VirtualHost\VirtualHostFile;
 use App\VirtualHost\VirtualHostModelParser;
+use Illuminate\Events\Dispatcher;
 
 class VHostsUpdater
 {
@@ -56,18 +57,13 @@ class VHostsUpdater
 
     /**
      * Register the listeners for the subscriber.
-     *
-     * @param  \Illuminate\Events\Dispatcher  $events
-     * @return array
      */
-    public function subscribe($events)
+    public function subscribe(Dispatcher $events)
     {
-        return [
-            HostCreated::class => 'updateVHosts',
-            HostUpdated::class => 'updateVHosts',
-            HostDeleted::class => 'updateVHosts',
-            SettingsUpdated::class => 'updateVHosts',
-        ];
+        $events->listen(
+            [HostCreated::class, HostUpdated::class, HostDeleted::class, SettingsUpdated::class],
+            [VHostsUpdater::class, 'updateVHosts']
+        );   
     }
 
     /**

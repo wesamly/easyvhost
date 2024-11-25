@@ -13,8 +13,9 @@ beforeEach(function () {
 it('should rewrite virtual hosts configs', function () {
 
     Storage::fake('vhosts_dir');
-    $configFile = Storage::disk('vhosts_dir')->path('/httpd-vhosts-rewrite.conf');
-    Storage::disk('vhosts_dir')->put($configFile, '<VirtualHost *.80></VirtualHost>');
+    $disk = Storage::disk('vhosts_dir');
+    $configFile = 'httpd-vhosts-rewrite.conf';
+    $disk->put($configFile, '<VirtualHost *.80></VirtualHost>');
 
     setting()->forgetAll();
     setting(['default_file' => $configFile])->save();
@@ -27,7 +28,7 @@ it('should rewrite virtual hosts configs', function () {
     // Get host ServerName directive
     $serverName = $host->configs()->where('directive', 'ServerName')->first()->value;
 
-    $content = Storage::disk('vhosts_dir')->get($configFile);
+    $content = $disk->get($configFile);
 
     expect($content)->toContain($serverName);
 });

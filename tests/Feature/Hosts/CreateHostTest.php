@@ -13,7 +13,7 @@ it('can create a new host', function () {
 
     Storage::fake('vhosts_dir');
     $disk = Storage::disk('vhosts_dir');
-    $configFile = $disk->path('/httpd-vhosts-create.conf');
+    $configFile = 'httpd-vhosts-create.conf';
     // File must exist
     $disk->put($configFile, '<VirtualHost *.80></VirtualHost>');
 

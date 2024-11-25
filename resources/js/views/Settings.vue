@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-12 col-sm-8 col-md-5" v-if="!settings.vhosts_path">
                             <div class="alert alert-warning">
-                                Virtual Hosts Configs Directory is required. Set value in the project .env as following:
+                                Virtual Hosts Configs Directory is required. Set value in the project <code>.env</code> file as following:
                                 <code>APACHE_VHOST_CONFIG_DIR="/path/here"</code><br>
                                 Paths may be but are not limited to (check your OS/Apache docs): 
                                     <ul>

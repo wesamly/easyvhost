@@ -24,7 +24,8 @@ class HostListRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'configs' => ['nullable', 'string'],
+            'tags' => ['nullable', 'string'],
         ];
     }
 }

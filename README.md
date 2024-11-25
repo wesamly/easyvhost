@@ -22,9 +22,9 @@ Beta
 
 ## Dependencies
 
-- PHP >= 8.1 (For detailed extensions check [Laravel 10 Deployment](https://laravel.com/docs/10.x/deployment#server-requirements))
+- PHP >= 8.2 (For detailed extensions check [Laravel 11 Deployment](https://laravel.com/docs/11.x/deployment#server-requirements))
 - Apache Web Server (for local development)
-- MySQL 5.7+, MariaDB 10.10+, or SQLite 3.8.8+
+- MySQL 5.7+, MariaDB 10.3+, or SQLite 3.26.0+
 - Node.js (16+)
 
 ## Installation
