@@ -53,7 +53,7 @@ export const useHostsStore = defineStore('hosts', {
             })
         },
         getHostsList(payload) {
-            return this.getHosts({configs: 'ServerName, DocumentRoot, _ip_port', tags: true, per_page: 99999})
+            return this.getHosts({configs: 'ServerName, DocumentRoot, _ip_port, SSLEngine', tags: true, per_page: 99999})
         },
         addHost(host) {
             return new Promise((resolve, reject) => {

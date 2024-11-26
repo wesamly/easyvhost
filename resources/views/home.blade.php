@@ -28,6 +28,12 @@
         <script>
             let AppVars = {
                 url: '{{ url('/') }}',
+                addrPorts: @json(config('vhosts.addr_ports')),
+                directives: {
+                    list: @json(config('vhosts.directives')),
+                    main: @json(config('vhosts.main_directives')),
+                    https: @json(config('vhosts.https_directives'))
+                }
             }
         </script>
         

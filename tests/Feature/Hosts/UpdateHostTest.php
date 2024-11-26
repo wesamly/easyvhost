@@ -32,7 +32,7 @@ it('can update host', function () {
 
     $data = [
         'domain' => $domain,
-        'config' => $configs,
+        'config' => ['http' => $configs],
         'tags' => $newTags->pluck('id')->toArray(),
     ];
 

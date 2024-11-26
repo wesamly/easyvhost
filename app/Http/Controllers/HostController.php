@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\VirtualHostSection;
 use App\Events\HostCreated;
 use App\Events\HostDeleted;
 use App\Events\HostUpdated;
@@ -44,8 +45,10 @@ class HostController extends Controller
     {
         $host = Host::create($request->validated());
 
-        foreach ($request->config as $directive => $value) {
-            $host->configs()->save(new HostConfig(['directive' => $directive, 'value' => $value]));
+        foreach ($request->config as $section => $sectionConfig) {
+            foreach ($sectionConfig as $directive => $value) {
+                $host->configs()->save(new HostConfig(['directive' => $directive, 'value' => $value, 'section' => $section]));
+            }
         }
 
         $tagIds = $request->has('tags') ? $request->tags : [];
@@ -77,23 +80,40 @@ class HostController extends Controller
         $host->save();
 
         // Update Directives
-        $currentDirectives = $host->configs->pluck('directive')->toArray();
-        $requestDirectives = array_keys($request->config);
+        /** @phpstan-ignore-next-line */
+        $currentDirectives = $host->configs->mapToGroups(function (HostConfig $config): array {
+            return [$config->section => $config->directive];
+        })->toArray();
+        $requestDirectives = [];
 
-        foreach ($request->config as $directive => $value) {
-            /** @var ?HostConfig $config */
-            $config = $host->configs()->where('directive', $directive)->first();
-            if (! is_null($config)) {
-                $config->value = $value;
-                $config->save();
-            } else {
-                $host->configs()->save(new HostConfig(['directive' => $directive, 'value' => $value]));
+        foreach ($request->config as $section => $sectionConfig) {
+            $requestDirectives[$section] = [];
+            foreach ($sectionConfig as $directive => $value) {
+                $requestDirectives[$section][] = $directive;
+
+                /** @var ?HostConfig $config */
+                $config = $host->configs()->where('section', $section)->where('directive', $directive)->first();
+                if (! is_null($config)) {
+                    $config->value = $value;
+                    $config->save();
+                } else {
+                    $host->configs()->save(
+                        new HostConfig([
+                            'section' => $section,
+                            'directive' => $directive,
+                            'value' => $value,
+                        ])
+                    );
+                }
             }
         }
 
-        $deletedDirectives = array_diff($currentDirectives, $requestDirectives);
-        if (! empty($deletedDirectives)) {
-            $host->configs()->whereIn('directive', $deletedDirectives)->delete();
+        foreach (VirtualHostSection::cases() as $sectionCase) {
+            $section = $sectionCase->value;
+            $deletedDirectives = array_diff($currentDirectives[$section] ?? [], $requestDirectives[$section] ?? []);
+            if (! empty($deletedDirectives)) {
+                $host->configs()->where('section', $section)->whereIn('directive', $deletedDirectives)->delete();
+            }
         }
 
         // Update Tags

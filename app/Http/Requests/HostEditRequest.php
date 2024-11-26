@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\VirtualHostSection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -29,8 +30,9 @@ class HostEditRequest extends FormRequest
         $rules = [
             'domain' => ['required', 'string'],
             'created_at' => ['nullable', 'date'],
+            'config' => ['required', 'array', new VirtualHostSection],
 
-            'config._addr_port' => ['required', 'string'],
+            'config.*._addr_port' => ['nullable', 'string'],
         ];
 
         if (! empty($hostId)) {

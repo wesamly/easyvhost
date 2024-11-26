@@ -24,7 +24,9 @@ it('can create a new host', function () {
 
     $data = [
         'domain' => $domain,
-        'config' => array_column(generateHostBasicDirectives($domain), 'value', 'directive'),
+        'config' => [
+            'http' => array_column(generateHostBasicDirectives($domain), 'value', 'directive'),
+        ],
         'tags' => $tags->pluck('id')->toArray(),
     ];
 
@@ -53,8 +55,13 @@ it('can create a new host', function () {
     // Assert file content match the added virtual host
     $content = $disk->get($configFile);
 
-    unset($data['config']['_addr_port']);
-    foreach ($data['config'] as $directive => $value) {
-        expect($content)->toContain($directive.' '.$value);
+    foreach ($data['config'] as $section => $sectionConfig) {
+
+        foreach ($sectionConfig as $directive => $value) {
+            if ($directive == '_addr_port') {
+                continue;
+            }
+            expect($content)->toContain($directive.' '.$value);
+        }
     }
 });

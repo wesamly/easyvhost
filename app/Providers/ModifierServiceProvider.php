@@ -25,7 +25,13 @@ class ModifierServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $finder = new Finder();
+        // Disable if tests are running
+        if (app()->runningUnitTests()) {
+            return;
+        }
+
+        // TODO: make modifiers functionality testable
+        $finder = new Finder;
         $modifiers = $finder->in(base_path('modifiers'))->depth(0)->files()->name('*.php');
 
         foreach ($modifiers as $file) {

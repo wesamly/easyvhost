@@ -22,6 +22,7 @@ class HostResource extends JsonResource
             'id' => (int) $this->id,
             'domain' => $this->domain,
             'doc_root_exists' => $this->when($this->configs()->exists(), $this->docRootExists),
+            'ssl_enabled' => $this->when($this->configs()->exists(), $this->sslEnabled),
             'configs' => HostConfigResource::collection($this->whenLoaded('configs')),
             'tag_ids' => $this->when($this->relationLoaded('tags'), $this->tags->pluck('id')),
             'created_at' => $this->created_at,

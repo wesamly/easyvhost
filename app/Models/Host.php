@@ -17,7 +17,7 @@ class Host extends Model
         'domain', 'created_at',
     ];
 
-    protected $appends = ['docRootExists'];
+    protected $appends = ['docRootExists', 'sslEnabled'];
 
     /**
      * Get Host Configs
@@ -51,11 +51,19 @@ class Host extends Model
         return false;
     }
 
-    /**
-     * Host Directives
-     */
-    public function getDirectivesAttribute(): Collection
+    public function getDirectives(string $section): Collection
     {
-        return $this->configs->pluck('value', 'directive');
+        return $this->configs->where('section', $section)->pluck('value', 'directive');
+    }
+
+    public function getSslEnabledAttribute(): bool
+    {
+        $entry = $this->configs
+            ->where('section', 'https')
+            ->where('directive', 'SSLEngine')
+            ->where('value', 'On')
+            ->first();
+
+        return ! empty($entry);
     }
 }

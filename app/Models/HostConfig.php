@@ -10,7 +10,7 @@ class HostConfig extends Model
     use Paginatable;
 
     protected $fillable = [
-        'host_id', 'directive', 'value',
+        'host_id', 'section', 'directive', 'value',
     ];
 
     public $timestamps = false;

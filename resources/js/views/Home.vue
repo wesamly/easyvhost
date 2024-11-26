@@ -15,8 +15,15 @@
                 </thead>
                 <tbody>
                     <tr v-for="host in hostsList" :key="host.id"  :class="{'table-primary': currentHost.id == host.id}">
-                        <td class="col-4"><a :href="getHostUrl(host)" target="_blank">{{ host.domain }}</a></td>
+                        <td class="col-4">
+                            <!-- SSL Enabled -->
+                            <span v-if="host.ssl_enabled"><i class="bi bi-shield-check text-success"></i></span>
+                            <span v-else><i class="bi bi-shield-slash text-secondary"></i></span>
+
+                            <a :href="getHostUrl(host)" target="_blank" class="ms-2">{{ host.domain }}</a>
+                        </td>
                         <td class="col-1">
+                            <!-- Document Root Exists -->
                             <span v-if="host.doc_root_exists"><i class="bi bi-check-circle text-success"></i></span>
                             <span v-else><i class="bi bi-exclamation-circle text-danger"></i></span>
                         </td>

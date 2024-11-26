@@ -2,38 +2,49 @@
 
 namespace App\VirtualHost;
 
+use App\Enums\VirtualHostSection;
 use App\Models\Host;
 
 class VirtualHostModelParser
 {
-    /**
-     * Virtual Host Model
-     *
-     * @var Host
-     */
-    protected $host;
-
     protected static $modifiers = [];
 
-    public function __construct(Host $host)
+    public function __construct(private Host $host)
     {
         $this->host = $host;
     }
 
     /**
-     * Get Virtual Host Block
+     * Get Virtual Host Blocks including http and https blocks (if defined)
      */
-    public function getVirtualHostBlock(): string
+    public function getVirtualHostBlocks(): string
     {
-        $directives = $this->host->directives;
+        $text = '';
+        foreach (VirtualHostSection::cases() as $section) {
+            $text .= $this->getVirtualHostBlock($section->value);
+        }
 
+        return $text;
+    }
+
+    public function getVirtualHostBlock(string $section): string
+    {
+        $directives = $this->host->getDirectives($section);
         if ($directives->isEmpty()) {
             return '';
         }
 
-        $text = '<VirtualHost '.$directives->get('_addr_port').'>'.PHP_EOL;
+        $addrPort = $directives->get('_addr_port');
+        if (empty($addrPort)) {
+            $addrPort = config('vhosts.addr_ports.'.$section);
+        }
 
-        $entries = $this->getEntries();
+        $entries = $this->getEntries($section);
+        if (empty($entries)) {
+            return '';
+        }
+
+        $text = '<VirtualHost '.$addrPort.'>'.PHP_EOL;
 
         foreach ($entries as $entry) {
             $text .= "\t {$entry}".PHP_EOL;
@@ -45,18 +56,34 @@ class VirtualHostModelParser
     }
 
     /**
-     * Get Virtual Host Entries
+     * Get Virtual Host Entries for a given section
      */
-    public function getEntries(): array
+    public function getEntries(string $section): array
     {
-        $directives = $this->host->directives;
+        $directives = $this->host->getDirectives($section);
 
         if ($directives->isEmpty()) {
             return [];
         }
 
+        if ($section == VirtualHostSection::HTTPS->value) {
+            if ($directives->get('SSLEngine') != 'On') {
+                return [];
+            }
+
+            $shareHttpDirectives = $directives->get('_share_directives') ?? false;
+            if ($shareHttpDirectives) {
+                $httpDirectives = $this->host->getDirectives(VirtualHostSection::HTTP->value);
+                $directives = $directives->merge($httpDirectives);
+            }
+        }
+
         $entries = [];
-        $directives->forget('_addr_port');
+        foreach ($directives as $directive => $value) {
+            if (substr($directive, 0, 1) == '_') {
+                $directives->forget($directive);
+            }
+        }
 
         foreach ($directives as $directive => $value) {
             if (empty($value)) {
@@ -70,7 +97,7 @@ class VirtualHostModelParser
                 return $a['p'] - $b['p'];
             });
             foreach (self::$modifiers as $modifier) {
-                $entries = call_user_func($modifier['c'], $this->host, $entries);
+                $entries = call_user_func($modifier['c'], $this->host, $entries, $section);
             }
         }
 

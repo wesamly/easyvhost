@@ -42,12 +42,12 @@ class VHostsUpdater
             // Check if have custom location tag
             $hostTagIds = $host->tags->pluck('id')->toArray();
             if (empty(array_intersect($hostTagIds, $foundTags))) {
-                $defaultFile->write($vhostParser->getVirtualHostBlock());
+                $defaultFile->write($vhostParser->getVirtualHostBlocks());
             } else {
                 foreach ($foundTags as $tagId) {
                     if (isset($vhFiles[$tagId])) {
                         foreach ($vhFiles[$tagId] as $vhFile) {
-                            $vhFile->write($vhostParser->getVirtualHostBlock());
+                            $vhFile->write($vhostParser->getVirtualHostBlocks());
                         }
                     }
                 }
@@ -63,7 +63,7 @@ class VHostsUpdater
         $events->listen(
             [HostCreated::class, HostUpdated::class, HostDeleted::class, SettingsUpdated::class],
             [VHostsUpdater::class, 'updateVHosts']
-        );   
+        );
     }
 
     /**
