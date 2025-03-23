@@ -9,6 +9,9 @@ Apache Virtual Hosts manager with the following features:
 - Easily search hosts.
 - Setting for virtual host file path with support to define a file per tag.
 
+[![CI/CD Status](https://img.shields.io/github/actions/workflow/status/wesamly/easyvhost/ci-cd.yml?branch=main)](https://github.com/wesamly/easyvhost/actions)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Technology**
 
 Laravel PHP Framework, with Vue 3 for frontend, and MySQL Database.
