@@ -2,9 +2,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "feature/ci-cd-support" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "feature/ci-cd-support" ]
+    branches: [ "main" ]
 
 jobs:
   laravel-tests:
