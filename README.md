@@ -13,6 +13,14 @@ Apache Virtual Hosts manager with the following features:
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**Screenshots**
+
+<div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+    <img src="screenshots/1-hosts-list.png" width="210">
+    <img src="screenshots/2-tags.png" width="210">
+    <img src="screenshots/3-settings.png" width="210">
+</div>
+
 **Technology**
 
 Laravel PHP Framework, with Vue 3 for frontend, and MySQL/SQLite Database.
