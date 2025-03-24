@@ -31,6 +31,17 @@ export default defineConfig({
     resolve: {
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+            '@node_modules': path.resolve(__dirname, 'node_modules'),
         }
-    }
+    },
+    define: {
+        __VITE_MODE__: JSON.stringify(process.env.NODE_ENV),
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `$viteMode: ${JSON.stringify(process.env.NODE_ENV)};`,
+            },
+        },
+    },
 });

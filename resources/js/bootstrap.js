@@ -16,6 +16,3 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Import app sass
 import '../sass/app.scss';
-
-// Bootstrap Icons icon font
-import 'bootstrap-icons/font/bootstrap-icons.scss';
