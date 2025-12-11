@@ -11,8 +11,8 @@
                 </div>
             </div>
             
-            <section-editor v-model="configs" />
-            <section-editor section="https" v-model="configs" />
+            <section-editor :host="host" v-model="configs" />
+            <section-editor :host="host" section="https" v-model="configs" />
             
             <hr>
 

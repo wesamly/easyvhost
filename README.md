@@ -90,6 +90,9 @@ npm run dev
 ```bash
 npm run build
 ```
+### Enable Desktop Integration (Optional)
+
+To allow EasyVHost to open folders on your computer, follow the [Protocol Setup Guide](docs/protocol_setup.md).
 
 ## Virtual Host Modifiers
 

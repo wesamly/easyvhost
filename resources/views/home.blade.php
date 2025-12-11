@@ -33,7 +33,8 @@
                     list: @json(config('vhosts.directives')),
                     main: @json(config('vhosts.main_directives')),
                     https: @json(config('vhosts.https_directives'))
-                }
+                },
+                openDirProtocol: '{{ config('vhosts.desktop_link_pattern', null) }}'
             }
         </script>
         

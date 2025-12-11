@@ -6,7 +6,4 @@ $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
-$bootstrap-icons-font-dir: "./fonts";
-@if ($viteMode == 'production') {
-   $bootstrap-icons-font-dir: "../../bundle/fonts";
-}
+$bootstrap-icons-font-dir: "../../bundle/fonts";

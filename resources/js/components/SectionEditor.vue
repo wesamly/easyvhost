@@ -30,7 +30,9 @@
             <div class="row mb-3" v-for="(entry, index) in mainDirectives" :key="`md-${index}`">
                 <label :for="`${section}_${entry}`" class="col-sm-3 col-form-label">{{ entry }}</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" :id="`${section}_${entry}`"
+                    <DocumentRoot v-if="entry == 'DocumentRoot'" :host="host" :section="section" :entry="entry"
+                        :directives="directives" :configs="configs" />
+                    <input v-else type="text" class="form-control form-control-sm" :id="`${section}_${entry}`"
                         :placeholder="directives[entry]" v-model="configs[entry]">
                 </div>
             </div>
@@ -70,9 +72,11 @@
     </div>
 </template>
 <script>
+import DocumentRoot from './directives/DocumentRoot.vue';
 
 export default {
     name: "SectionEditor",
+    components: { DocumentRoot },
     emits: ['update:modelValue'],
     props: {
         section: {
@@ -81,6 +85,9 @@ export default {
             validator: function (value) {
                 return ['http', 'https'].indexOf(value) !== -1
             }
+        },
+        host: {
+            type: Object
         },
         modelValue: {
             type: Object
