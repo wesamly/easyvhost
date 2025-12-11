@@ -132,12 +132,9 @@
                 if (String(serverName).indexOf('://') > -1) {
                     return serverName
                 }
-                let addrPort = this.getHostConfig(host.configs, '_addr_port')
-                let scheme = 'http://'
-                if (addrPort.indexOf(':443') > -1) {
-                    scheme = 'https://'
-                }
                 
+                let scheme = host.ssl_enabled ? 'https://' : 'http://'
+
                 return `${scheme}${serverName}`
             },
             isFiltered(host) {
