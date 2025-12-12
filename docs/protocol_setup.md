@@ -1,10 +1,3 @@
-This is a much better solution. It removes the complexity of compiling apps, code signing, and cache clearing.
-
-Here is the updated **`PROTOCOL_SETUP.md`** focusing on the Hammerspoon integration for macOS.
-
------
-
-````markdown
 # Feature: Open Virtual Host in File Manager
 
 EasyVHost allows you to open your virtual host folders directly in your OS file manager (Finder) from the web interface.
@@ -87,5 +80,3 @@ EASYVHOST_DESKTOP_LINK_PATTERN="easyvhost://%path%"
 
 *Documentation for Windows and Linux custom protocol handlers coming soon.*
 
-```
-```
